@@ -106,5 +106,59 @@ a {
 /* BODY */
 
 .body {
+    width: 90vw;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+}
 
+.body .section {
+    display: flex;
+    margin: 20px 0px 20px 0px;
+    width: 93%;
+    justify-content: space-around;
+}
+
+.body .section .conteudo {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 30px;
+}
+
+.body .section .conteudo h1 {
+    font-size: 8vw;
+}
+
+.body .section .conteudo p {
+    font-size: 2vw;
+    font-weight: 200;
+}
+
+.body .section .conteudo div {
+    width: 50%;
+    gap: 20px;
+}
+
+.body .section .conteudo div p {
+    font-size: 50px;
+    font-weight: 600;
+}
+
+.body .section .conteudo .botaoTransparente {
+    border: #000000 2px solid;
+}
+
+.body .section .conteudo .botaoAzul {
+    color: #FFFFFF;
+}
+
+.body #homeDesafios {
+    flex-direction: row-reverse;
+    align-self: flex-end;
+}
+
+.body #homeDesafios h1{
+    color: #416992;
 }
