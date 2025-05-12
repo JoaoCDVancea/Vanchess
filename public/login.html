@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Vanchess</title>
+    <link rel="stylesheet" href="./css/login.css">
+</head>
+<body>
+    <div class="logo">
+        <img src="./assets/imgs/homeChess.png" alt="Lagotto">
+    </div>
+    <div class="conteudo" id="div_conteudo">
+        
+    </div>
+</body>
+</html>
+<script>
+    telaLogin();
+
+    function telaLogin() {
+        div_conteudo.innerHTML = `
+            <div class="formulario">
+                <div class="campo">
+                    <p>Endereço de Email</p>
+                    <input type="text" id="iptEmail" placeholder="Email *">
+                    <div id="avisoEmail" class="aviso"></div> 
+                </div>
+                <div class="campo">
+                    <p>Senha</p>
+                    <input type="password" id="iptSenha" placeholder="Senha *">
+                    <div id="avisoSenha" class="aviso"></div> 
+                </div>
+                <div class="checkbox">
+                    <input type="checkbox" value="true">
+                    <p>Lembre-se de Mim</p>
+                </div>
+                <button onclick="login()">Entrar</button>
+                <p id="esqueceuSenha">Esqueceu a Senha?</p>      
+            </div>
+            <h3 onclick="telaCadastro()">Ainda não tem conta?<span> Cadastre-se</span></h3>
+        `;
+    }
+
+    function telaCadastro() {
+        div_conteudo.innerHTML = `
+            <div class="formulario">
+                <div class="campo">
+                    <p>Endereço de Email</p>
+                    <input type="text" id="iptEmail" placeholder="Email *">
+                    <div id="avisoEmail" class="aviso"></div> 
+                </div>
+                <div class="campo">
+                    <p>Senha</p>
+                    <input type="password" id="iptSenha" placeholder="Senha *">
+                    <div id="avisoSenha" class="aviso"></div> 
+                </div>
+                <div class="campo">
+                    <p>Senha</p>
+                    <input type="password" id="iptConfirmarSenha" placeholder="Confirmar Senha *">
+                    <div id="avisoConfirmarSenha" class="aviso"></div> 
+                </div>
+                <button onclick="cadastrar()">Cadastrar</button>
+                <div id="confirmacaoCadastro"></div> 
+            </div>
+            <h3 onclick="telaLogin()">Já possui cadastro?<span> Entrar</span></h3>
+        `;
+    }
+
+    function cadastrar() {
+        avisoEmail.innerHTML = ``;
+        avisoSenha.innerHTML = ``;
+        avisoConfirmarSenha.innerHTML = ``;
+
+        let usuarioEmail = iptEmail.value;
+        let indiceArroba = usuarioEmail.indexOf('@');
+        let indicePontoCom = usuarioEmail.indexOf('.com');
+        let arrobaAntesPontoCom = indiceArroba < indicePontoCom;
+
+        let emailIncorreto = false;
+        if(indiceArroba == -1 || indicePontoCom == -1 || !arrobaAntesPontoCom) {
+            avisoEmail.innerHTML = `Insira um email válido!`;
+            emailIncorreto = true;
+        }
+
+        let senhaIncorreta = false;
+        let usuarioSenha = iptSenha.value;
+
+        if(usuarioSenha.length < 8) {
+            avisoSenha.innerHTML += `Sua senha deve ter ao menos 8 caracteres!<br>`;
+            senhaIncorreta = true;
+        }
+
+        const letraMaiuscula = new RegExp("[A-Z]");
+        const letraMinuscula = new RegExp("[a-z]");
+        const caracterEspecial = new RegExp(/[^a-zA-Z0-9]/);
+
+        if(!letraMaiuscula.test(usuarioSenha)) {
+            avisoSenha.innerHTML += `Sua senha deve conter ao menos uma letra maiúscula!<br>`;
+            senhaIncorreta = true;
+        }
+
+        if(!letraMinuscula.test(usuarioSenha)) {
+            avisoSenha.innerHTML += `Sua senha deve conter ao menos uma letra minúscula!<br>`;
+            senhaIncorreta = true;
+        }
+
+        if(!caracterEspecial.test(usuarioSenha)) {
+            avisoSenha.innerHTML += `Sua senha deve conter ao menos um caracter especial!`;
+            senhaIncorreta = true;
+        }
+
+        if(emailIncorreto || senhaIncorreta) {
+            return;
+        }
+
+        let confirmarSenha = iptConfirmarSenha.value;
+        if(confirmarSenha != usuarioSenha) {
+            avisoConfirmarSenha.innerHTML = `As senhas não são iguais!`;
+            return;
+        }
+
+        emailUsuarios.push(usuarioEmail);
+        senhaUsuarios.push(usuarioSenha);
+        confirmacaoCadastro.innerHTML = `Cadastro concluído com sucesso!`;
+    }
+
+    function login() {
+        avisoEmail.innerHTML = ``;
+        avisoSenha.innerHTML = ``;
+
+        let usuarioEmail = iptEmail.value;
+        let usuarioSenha = iptSenha.value;
+
+        let camposVazios = false;
+        if(usuarioEmail == '') { 
+            avisoEmail.innerHTML = `Insira um Email!`;
+            camposVazios = true;
+        }
+
+        if(usuarioSenha == '') {
+            avisoSenha.innerHTML = `Insira uma senha!`;
+            camposVazios = true;
+        }
+
+        if(camposVazios) {
+            return;
+        }
+
+        if(emailUsuarios.indexOf(usuarioEmail) == -1) {
+            avisoEmail.innerHTML = `Email não cadastrado!`;
+            return;
+        }
+
+        let emailIndice = emailUsuarios.indexOf(usuarioEmail);
+        if(senhaUsuarios[emailIndice] != usuarioSenha) {
+            avisoSenha.innerHTML = `Senha incorreta!`;
+            return;
+        }
+
+        window.location.href = "dashboard.html";
+    }
+</script>
