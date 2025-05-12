@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Vanchess</title>
     <link rel="stylesheet" href="./css/login.css">
 </head>
+
 <body>
     <div class="logo">
         <img src="./assets/imgs/homeChess.png" alt="Lagotto">
     </div>
     <div class="conteudo" id="div_conteudo">
-        
+
     </div>
 </body>
+
 </html>
 <script>
     telaLogin();
@@ -46,6 +49,11 @@
         div_conteudo.innerHTML = `
             <div class="formulario">
                 <div class="campo">
+                    <p>Nome de Usuário</p>
+                    <input type="text" id="iptNome" placeholder="Nome de Usuário *">
+                    <div id="avisoNome" class="aviso"></div> 
+                </div>
+                <div class="campo">
                     <p>Endereço de Email</p>
                     <input type="text" id="iptEmail" placeholder="Email *">
                     <div id="avisoEmail" class="aviso"></div> 
@@ -68,17 +76,24 @@
     }
 
     function cadastrar() {
+        avisoNome.innerHTML = ``;
         avisoEmail.innerHTML = ``;
         avisoSenha.innerHTML = ``;
         avisoConfirmarSenha.innerHTML = ``;
 
+        let usuarioNome = iptNome.value;
         let usuarioEmail = iptEmail.value;
         let indiceArroba = usuarioEmail.indexOf('@');
         let indicePontoCom = usuarioEmail.indexOf('.com');
         let arrobaAntesPontoCom = indiceArroba < indicePontoCom;
 
+        if (usuarioNome == '') {
+            avisoNome.innerHTML = `Insira um nome de usuário!`;
+            return;
+        }
+
         let emailIncorreto = false;
-        if(indiceArroba == -1 || indicePontoCom == -1 || !arrobaAntesPontoCom) {
+        if (indiceArroba == -1 || indicePontoCom == -1 || !arrobaAntesPontoCom) {
             avisoEmail.innerHTML = `Insira um email válido!`;
             emailIncorreto = true;
         }
@@ -86,7 +101,7 @@
         let senhaIncorreta = false;
         let usuarioSenha = iptSenha.value;
 
-        if(usuarioSenha.length < 8) {
+        if (usuarioSenha.length < 8) {
             avisoSenha.innerHTML += `Sua senha deve ter ao menos 8 caracteres!<br>`;
             senhaIncorreta = true;
         }
@@ -95,34 +110,64 @@
         const letraMinuscula = new RegExp("[a-z]");
         const caracterEspecial = new RegExp(/[^a-zA-Z0-9]/);
 
-        if(!letraMaiuscula.test(usuarioSenha)) {
+        if (!letraMaiuscula.test(usuarioSenha)) {
             avisoSenha.innerHTML += `Sua senha deve conter ao menos uma letra maiúscula!<br>`;
             senhaIncorreta = true;
         }
 
-        if(!letraMinuscula.test(usuarioSenha)) {
+        if (!letraMinuscula.test(usuarioSenha)) {
             avisoSenha.innerHTML += `Sua senha deve conter ao menos uma letra minúscula!<br>`;
             senhaIncorreta = true;
         }
 
-        if(!caracterEspecial.test(usuarioSenha)) {
+        if (!caracterEspecial.test(usuarioSenha)) {
             avisoSenha.innerHTML += `Sua senha deve conter ao menos um caracter especial!`;
             senhaIncorreta = true;
         }
 
-        if(emailIncorreto || senhaIncorreta) {
+        if (emailIncorreto || senhaIncorreta) {
             return;
         }
 
         let confirmarSenha = iptConfirmarSenha.value;
-        if(confirmarSenha != usuarioSenha) {
+        if (confirmarSenha != usuarioSenha) {
             avisoConfirmarSenha.innerHTML = `As senhas não são iguais!`;
             return;
         }
 
-        emailUsuarios.push(usuarioEmail);
-        senhaUsuarios.push(usuarioSenha);
-        confirmacaoCadastro.innerHTML = `Cadastro concluído com sucesso!`;
+        fetch("/usuarios/cadastrar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                // crie um atributo que recebe o valor recuperado aqui
+                // Agora vá para o arquivo routes/usuario.js
+                nomeServer: usuarioNome,
+                emailServer: usuarioEmail,
+                senhaServer: usuarioSenha
+            }),
+        }).then(function (resposta) {
+            console.log("resposta: ", resposta);
+
+            if (resposta.ok) {
+                confirmacaoCadastro.innerHTML =
+                    "Cadastro realizado com sucesso!";
+
+                /* setTimeout(() => {
+                    window.location = "login.html";
+                }, "2000");
+
+                limparFormulario();
+                finalizarAguardar(); */
+            } else {
+                throw "Houve um erro ao tentar realizar o cadastro!";
+            }
+        }).catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+
+        return false;
     }
 
     function login() {
@@ -133,27 +178,27 @@
         let usuarioSenha = iptSenha.value;
 
         let camposVazios = false;
-        if(usuarioEmail == '') { 
+        if (usuarioEmail == '') {
             avisoEmail.innerHTML = `Insira um Email!`;
             camposVazios = true;
         }
 
-        if(usuarioSenha == '') {
+        if (usuarioSenha == '') {
             avisoSenha.innerHTML = `Insira uma senha!`;
             camposVazios = true;
         }
 
-        if(camposVazios) {
+        if (camposVazios) {
             return;
         }
 
-        if(emailUsuarios.indexOf(usuarioEmail) == -1) {
+        if (emailUsuarios.indexOf(usuarioEmail) == -1) {
             avisoEmail.innerHTML = `Email não cadastrado!`;
             return;
         }
 
         let emailIndice = emailUsuarios.indexOf(usuarioEmail);
-        if(senhaUsuarios[emailIndice] != usuarioSenha) {
+        if (senhaUsuarios[emailIndice] != usuarioSenha) {
             avisoSenha.innerHTML = `Senha incorreta!`;
             return;
         }
