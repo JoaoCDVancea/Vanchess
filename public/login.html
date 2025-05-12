@@ -39,6 +39,7 @@
                     <p>Lembre-se de Mim</p>
                 </div>
                 <button onclick="login()">Entrar</button>
+                <div id="confirmacaoLogin" class="confirmacao"></div>
                 <p id="esqueceuSenha">Esqueceu a Senha?</p>      
             </div>
             <h3 onclick="telaCadastro()">Ainda não tem conta?<span> Cadastre-se</span></h3>
@@ -69,7 +70,7 @@
                     <div id="avisoConfirmarSenha" class="aviso"></div> 
                 </div>
                 <button onclick="cadastrar()">Cadastrar</button>
-                <div id="confirmacaoCadastro"></div> 
+                <div id="confirmacaoCadastro" class="confirmacao"></div> 
             </div>
             <h3 onclick="telaLogin()">Já possui cadastro?<span> Entrar</span></h3>
         `;
@@ -152,14 +153,12 @@
 
             if (resposta.ok) {
                 confirmacaoCadastro.innerHTML =
-                    "Cadastro realizado com sucesso!";
+                    "Cadastro realizado com sucesso! Redirecionando para o site em 3 segundos...";
 
-                /* setTimeout(() => {
-                    window.location = "login.html";
-                }, "2000");
+                    setTimeout(() => {
+                    window.location = "/dashboard/desafios.html";
+                }, "3000");
 
-                limparFormulario();
-                finalizarAguardar(); */
             } else {
                 throw "Houve um erro ao tentar realizar o cadastro!";
             }
@@ -192,17 +191,45 @@
             return;
         }
 
-        if (emailUsuarios.indexOf(usuarioEmail) == -1) {
-            avisoEmail.innerHTML = `Email não cadastrado!`;
-            return;
-        }
+        fetch("/usuarios/autenticar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                emailServer: usuarioEmail,
+                senhaServer: usuarioSenha
+            })
+        }).then(function (resposta) {
+            console.log("ESTOU NO THEN DO entrar()!")
 
-        let emailIndice = emailUsuarios.indexOf(usuarioEmail);
-        if (senhaUsuarios[emailIndice] != usuarioSenha) {
-            avisoSenha.innerHTML = `Senha incorreta!`;
-            return;
-        }
+            if (resposta.ok) {
+                console.log(resposta);
 
-        window.location.href = "dashboard.html";
+                resposta.json().then(json => {
+                    console.log(json);
+                    console.log(JSON.stringify(json));
+                    sessionStorage.EMAIL_USUARIO = json.email;
+                    sessionStorage.NOME_USUARIO = json.nome;
+                    sessionStorage.ID_USUARIO = json.idUsuario;
+
+                    setTimeout(function () {
+                        window.location = "/dashboard/desafios.html";
+                    }, 2000); // apenas para exibir o loading
+
+                });
+
+            } else {
+                console.log("Houve um erro ao tentar realizar o login!");
+
+                resposta.text().then(texto => {
+                    console.error(texto);
+                });
+            }
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+
+        return false;
     }
 </script>
