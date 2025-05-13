@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+* {
+    padding: 0px;
+    margin: 0px;
+    font-family: 'DM Sans', sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: row;
+}
+
+.navbar {
+    width: 15vw;
+    height: 100vh;
+    background-color: #4179b2;
+    position: fixed;
+}
+
+.conteudo {
+    margin-left: 15vw;
+    display: flex;
+    justify-content: center;
+    width: 85vw;
+}
+
+.conteudo .section {
+    border: 1px solid #000000;
+    padding: 60px;
+    margin: 20px;
+    border-radius: 12px;
+    display: flex;
+}
+
+.conteudo .section .head {
+    display: flex;
+    gap: 100px;
+}
+
+.conteudo .section .head .head-conteudo {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.conteudo .section .head .head-conteudo div {
+    display: flex;
+    border: 1px solid #000000;
+    height: 60px;
+    padding: 10px;
+    font-size: 40px;
+    border-radius: 8px;
+    gap: 20px;
+    font-weight: 600;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.conteudo .section .head .head-conteudo h1 {
+    font-size: 80px;
+    justify-self: start;
+}
+
+.conteudo .section .head .head-conteudo #botaoPrincipal {
+    background-color: #4179b2;
+    color: #FFFFFF;
+    border: none;
+}
