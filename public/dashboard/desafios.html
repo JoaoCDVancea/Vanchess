@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="navbar">
-        <p>Desafios</p>
+        <p></p>
     </div>
     <div class="conteudo">
         <div class="section">
@@ -16,7 +16,7 @@
                 <img src="../assets/imgs/desafios.png" alt="">
                 <div class="head-conteudo">
                     <h1>Desafios</h1>
-                    <div class="botao" id="botaoPrincipal">
+                    <div class="botao" id="botaoPrincipal" onclick="desafioDiario()">
                         <p>Desafio Diário</p>
                         <img src="../assets/icon/botaoDesafios.svg" alt="">
                     </div>
@@ -26,7 +26,34 @@
                     </div>
                     <div class="botao">
                         <p>Desafios Sorteados</p>
-                        <img src="../assets/icon/streak.svg     " alt="">
+                        <img src="../assets/icon/streak.svg" alt="">
+                    </div>
+                </div>
+            </div>
+            <div id="desafio" class="hide">
+                <img src="../assets/imgs/tabuleiro.png" alt="">
+                <div class="desafio-conteudo">
+                    <div class="jogador">
+                        <div class="circulo"></div>
+                        <p>Brancas Jogam</p>
+                    </div>
+                    <div class="botoes">
+                        <div class="botao correto">
+                            <p>Txf2</p>
+                        </div>
+                        <div class="botao errado">
+                            <p>Dh8</p>
+                        </div>
+                        <div class="botao">
+                            <p>Rh1</p>
+                        </div>
+                        <div class="botao">
+                            <p>b3</p>
+                        </div>
+                    </div>
+                    <div class="explicacao">
+                        <h1>Explicação</h1>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque  non augue sit amet enim ullamcorper eleifend. Ut sem urna, imperdiet vel ullamcorper nec, tempor egestas nulla.</p>
                     </div>
                 </div>
             </div>
@@ -34,3 +61,11 @@
     </div>
 </body>
 </html>
+<script>
+    function desafioDiario() {
+        let desafio = document.getElementById('desafio');
+
+        desafio.classList.remove('hide');
+        desafio.scrollIntoView({behavior: 'smooth', })
+    }
+</script>

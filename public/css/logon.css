@@ -26,16 +26,20 @@ body {
 }
 
 .conteudo .section {
+    width: 71%;
     border: 1px solid #000000;
     padding: 60px;
     margin: 20px;
     border-radius: 12px;
     display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .conteudo .section .head {
     display: flex;
     gap: 100px;
+    padding-bottom: 40px;
 }
 
 .conteudo .section .head .head-conteudo {
@@ -70,4 +74,87 @@ body {
     background-color: #4179b2;
     color: #FFFFFF;
     border: none;
+}
+
+/* DESAFIO */
+
+#desafio {
+    display: flex;
+    gap: 30px;
+    padding-top: 20px;
+    border-top: 0.5px solid #8F8F8F;
+}
+
+#desafio .desafio-conteudo {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#desafio .desafio-conteudo .jogador {
+    display: flex;
+    gap: 10px;
+    font-size: 45px;
+    font-weight: 600;
+}
+
+#desafio .desafio-conteudo .jogador .circulo {
+    width: 50px;
+    height: 50px;
+    border: 2.5px solid #000000;
+    border-radius: 100px;
+}
+
+#desafio .desafio-conteudo .botoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 33vw;
+
+}
+
+#desafio .desafio-conteudo .botoes .botao {
+    border: 1px solid #000000;
+    width: 15vw;
+    padding: 10px;
+    font-size: 40px;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+}
+
+#desafio .desafio-conteudo .botoes .correto {
+    background-color: #68D585;
+    color: #FFFFFF;
+    border: none;
+}
+
+#desafio .desafio-conteudo .botoes .errado {
+    background-color: #E26B6B;
+    color: #FFFFFF;
+    border: none;
+}
+
+#desafio .desafio-conteudo .explicacao {
+    width: 33vw;
+    align-self: flex-start;
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+#desafio .desafio-conteudo .explicacao h1 {
+    font-size: 40px;
+}
+
+#desafio .desafio-conteudo .explicacao p {
+    font-size: 20px;
+    font-weight: 300;
+}
+
+.hide {
+    display: none !important;
 }
