@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Desafios - Vanchess</title>
     <link rel="stylesheet" href="../css/logon.css">
 </head>
+
 <body>
     <div class="navbar">
         <p></p>
@@ -30,42 +32,70 @@
                     </div>
                 </div>
             </div>
-            <div id="desafio" class="hide">
-                <img src="../assets/imgs/tabuleiro.png" alt="">
-                <div class="desafio-conteudo">
-                    <div class="jogador">
-                        <div class="circulo"></div>
-                        <p>Brancas Jogam</p>
-                    </div>
-                    <div class="botoes">
-                        <div class="botao correto">
-                            <p>Txf2</p>
-                        </div>
-                        <div class="botao errado">
-                            <p>Dh8</p>
-                        </div>
-                        <div class="botao">
-                            <p>Rh1</p>
-                        </div>
-                        <div class="botao">
-                            <p>b3</p>
-                        </div>
-                    </div>
-                    <div class="explicacao">
-                        <h1>Explicação</h1>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque  non augue sit amet enim ullamcorper eleifend. Ut sem urna, imperdiet vel ullamcorper nec, tempor egestas nulla.</p>
-                    </div>
-                </div>
-            </div>
+            <div id="desafio"></div>
         </div>
     </div>
 </body>
+
 </html>
 <script>
     function desafioDiario() {
-        let desafio = document.getElementById('desafio');
+        fetch("/desafios/desafioDiario", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).then(
+            function (resposta) {
+                console.log("ESTOU NO THEN DO desafio diário()!");
 
-        desafio.classList.remove('hide');
-        desafio.scrollIntoView({behavior: 'smooth', })
+                if (resposta.ok) {
+                    console.log(resposta);
+                    resposta.json().then(json => {
+                        let jogador = json.jogador === 0 ? 'Brancas' : 'Pretas';
+
+                        desafio.innerHTML = `
+                            <img src="${json.imagem}" alt="">
+                            <div class="desafio-conteudo">
+                                <div class="jogador">
+                                    <div class="circulo"></div>
+                                    <p>${jogador} Jogam</p>
+                                </div>
+                                <div id="botoes">
+                                    <div class="botao correto">
+                                        <p>Txf2</p>
+                                    </div>
+                                    <div class="botao errado">
+                                        <p>Dh8</p>
+                                    </div>
+                                    <div class="botao">
+                                        <p>Rh1</p>
+                                    </div>
+                                    <div class="botao">
+                                        <p>b3</p>
+                                    </div>
+                                </div>
+                                <div id="explicacao">
+                                    <h1>Explicação</h1>
+                                    <p>${json.explicacao}</p>
+                                </div>
+                            </div>
+                    `;
+
+                        let element = document.getElementById("explicacao");
+                        element.scrollIntoView({ behavior: "smooth" });
+                    });
+                } else {
+                    console.log("Houve um erro ao tentar realizar o login!");
+
+                    resposta.text().then(texto => {
+                        console.error(texto);
+                    });
+                }
+            }).catch(function (erro) {
+                console.log(erro);
+            })
+
+        return false;
     }
 </script>

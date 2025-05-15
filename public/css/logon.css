@@ -81,8 +81,12 @@ body {
 #desafio {
     display: flex;
     gap: 30px;
-    padding-top: 20px;
+    padding-top: 30px;
     border-top: 0.5px solid #8F8F8F;
+}
+
+#desafio img {
+    border-radius: 16px;
 }
 
 #desafio .desafio-conteudo {
@@ -97,6 +101,8 @@ body {
     gap: 10px;
     font-size: 45px;
     font-weight: 600;
+    align-items: center;
+    justify-content: center;
 }
 
 #desafio .desafio-conteudo .jogador .circulo {
@@ -106,7 +112,7 @@ body {
     border-radius: 100px;
 }
 
-#desafio .desafio-conteudo .botoes {
+#desafio .desafio-conteudo #botoes {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
@@ -114,7 +120,7 @@ body {
 
 }
 
-#desafio .desafio-conteudo .botoes .botao {
+#desafio .desafio-conteudo #botoes .botao {
     border: 1px solid #000000;
     width: 15vw;
     padding: 10px;
@@ -126,19 +132,19 @@ body {
     border-radius: 4px;
 }
 
-#desafio .desafio-conteudo .botoes .correto {
+#desafio .desafio-conteudo #botoes .correto {
     background-color: #68D585;
     color: #FFFFFF;
     border: none;
 }
 
-#desafio .desafio-conteudo .botoes .errado {
+#desafio .desafio-conteudo #botoes .errado {
     background-color: #E26B6B;
     color: #FFFFFF;
     border: none;
 }
 
-#desafio .desafio-conteudo .explicacao {
+#desafio .desafio-conteudo #explicacao {
     width: 33vw;
     align-self: flex-start;
     gap: 20px;
@@ -146,13 +152,14 @@ body {
     flex-direction: column;
 }
 
-#desafio .desafio-conteudo .explicacao h1 {
+#desafio .desafio-conteudo #explicacao h1 {
     font-size: 40px;
 }
 
-#desafio .desafio-conteudo .explicacao p {
+#desafio .desafio-conteudo #explicacao p {
     font-size: 20px;
     font-weight: 300;
+    font-style: italic;
 }
 
 .hide {
