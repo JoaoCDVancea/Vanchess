@@ -140,7 +140,7 @@
     }
 
     function resolverDesafio(correto, idBotao) {
-        if(desafioResolvido == 1) {
+        if (desafioResolvido == 1) {
             return;
         }
 
@@ -154,10 +154,10 @@
                 idDesafioServer: idDesafio,
                 respostaServer: correto
             })
-        }).then(function(resposta) {
+        }).then(function (resposta) {
             console.log(resposta);
 
-            if(resposta.ok) {
+            if (resposta.ok) {
                 let botao = document.getElementById(`botao${idBotao}`);
                 correto == 1 ? botao.classList.add("correto") : botao.classList.add("errado");
 
@@ -169,7 +169,7 @@
                 console.log("Houve um erro ao resolver o desafio!");
                 console.log(resposta.json.erro);
             }
-        }).catch(function(erro) {
+        }).catch(function (erro) {
             console.log(`#ERRO: ${resposta}`);
         });
 

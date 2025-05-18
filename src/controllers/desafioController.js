@@ -2,11 +2,11 @@ var desafioModel = require("../models/desafioModel");
 
 function desafioDiario(req, res) {
     desafioModel.desafioDiario().then(
-        function(resultadoDiario) {
+        function (resultadoDiario) {
             console.log(`\nResultados encontrados: ${resultadoDiario.length}`);
             console.log(`Resultados: ${JSON.stringify(resultadoDiario)}`); // transforma JSON em String
 
-            if(resultadoDiario.length == 1) {
+            if (resultadoDiario.length == 1) {
                 console.log(resultadoDiario);
 
                 res.json({
@@ -15,7 +15,7 @@ function desafioDiario(req, res) {
                     imagem: resultadoDiario[0].imagem,
                     explicacao: resultadoDiario[0].explicacao
                 });
-                
+
             } else {
                 res.status(403).send("Erro ao buscar desafio diário");
             }
@@ -43,7 +43,7 @@ function resolverDesafio(req, res) {
     let resposta = req.body.respostaServer;
 
     desafioModel.resolverDesafio(idUsuario, idDesafio, resposta).then(
-        function(resultado) {
+        function (resultado) {
             res.json(resultado);
         }
     ).catch(
