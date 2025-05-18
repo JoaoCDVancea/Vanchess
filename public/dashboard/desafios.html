@@ -39,7 +39,12 @@
 
 </html>
 <script>
+    let desafioResolvido;
+    let idDesafio;
+
     function desafioDiario() {
+        let id;
+
         fetch("/desafios/desafioDiario", {
             method: "GET",
             headers: {
@@ -52,41 +57,73 @@
                 if (resposta.ok) {
                     console.log(resposta);
                     resposta.json().then(json => {
-                        let jogador = json.jogador === 0 ? 'Brancas' : 'Pretas';
+                        let jogador;
+                        let classJogador;
+
+                        let id = json.idDesafio;
+                        console.log(id);
+
+                        if (json.jogador == 0) {
+                            jogador = 'Brancas';
+                            classJogador = 'brancas';
+                        } else {
+                            jogador = 'Pretas';
+                            classJogador = 'pretas';
+                        }
 
                         desafio.innerHTML = `
                             <img src="${json.imagem}" alt="">
                             <div class="desafio-conteudo">
                                 <div class="jogador">
-                                    <div class="circulo"></div>
+                                    <div class="circulo ${classJogador}"></div>
                                     <p>${jogador} Jogam</p>
                                 </div>
-                                <div id="botoes">
-                                    <div class="botao correto">
-                                        <p>Txf2</p>
-                                    </div>
-                                    <div class="botao errado">
-                                        <p>Dh8</p>
-                                    </div>
-                                    <div class="botao">
-                                        <p>Rh1</p>
-                                    </div>
-                                    <div class="botao">
-                                        <p>b3</p>
-                                    </div>
-                                </div>
-                                <div id="explicacao">
+                                <div id="botoes"></div>
+                                <div id="explicacao" class="hide">
                                     <h1>Explicação</h1>
                                     <p>${json.explicacao}</p>
                                 </div>
                             </div>
-                    `;
+                        `;
 
-                        let element = document.getElementById("explicacao");
-                        element.scrollIntoView({ behavior: "smooth" });
+                        idDesafio = json.idDesafio;
+
+                        fetch(`/desafios/buscar/${id}`, {
+                            method: "GET",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                        }).then(
+                            function (resposta) {
+                                console.log("Estou puxando os desafios");
+
+                                if (resposta.ok) {
+                                    console.log(resposta);
+                                    resposta.json().then(json => {
+                                        json.forEach((opcao) => {
+                                            botoes.innerHTML += `
+                                                <div class="botao" id="botao${opcao.idOpcao}" onclick="resolverDesafio(${opcao.correta}, ${opcao.idOpcao})">
+                                                    <p>${opcao.descricao}</p>
+                                                </div>
+                                            `;
+                                        });
+                                    });
+
+                                    desafioResolvido = 0;
+                                } else {
+                                    console.log("Houve um erro ao tentar buscar o desafio!");
+
+                                    resposta.text().then(texto => {
+                                        console.error(texto);
+                                    });
+                                }
+                            }
+                        ).catch(function (erro) {
+                            console.log(erro);
+                        });
                     });
                 } else {
-                    console.log("Houve um erro ao tentar realizar o login!");
+                    console.log("Houve um erro ao tentar buscar o desafio!");
 
                     resposta.text().then(texto => {
                         console.error(texto);
@@ -94,8 +131,48 @@
                 }
             }).catch(function (erro) {
                 console.log(erro);
-            })
+            });
+
+        let element = document.getElementById("botoes");
+        element.scrollIntoView({ behavior: "smooth" });
 
         return false;
     }
+
+    function resolverDesafio(correto, idBotao) {
+        if(desafioResolvido == 1) {
+            return;
+        }
+
+        fetch("/desafios/resolverDesafio", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                idUsuarioServer: JSON.parse(sessionStorage.ID_USUARIO),
+                idDesafioServer: idDesafio,
+                respostaServer: correto
+            })
+        }).then(function(resposta) {
+            console.log(resposta);
+
+            if(resposta.ok) {
+                let botao = document.getElementById(`botao${idBotao}`);
+                correto == 1 ? botao.classList.add("correto") : botao.classList.add("errado");
+
+                let explicacao = document.getElementById("explicacao");
+                explicacao.classList.remove("hide");
+
+                desafioResolvido = 1;
+            } else {
+                console.log("Houve um erro ao resolver o desafio!");
+                console.log(resposta.json.erro);
+            }
+        }).catch(function(erro) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+
+        return false;
+    } 
 </script>

@@ -87,6 +87,7 @@ body {
 
 #desafio img {
     border-radius: 16px;
+    width: 100%;
 }
 
 #desafio .desafio-conteudo {
@@ -164,4 +165,8 @@ body {
 
 .hide {
     display: none !important;
+}
+
+.pretas {
+    background-color: #000000;
 }

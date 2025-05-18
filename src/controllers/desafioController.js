@@ -29,6 +29,37 @@ function desafioDiario(req, res) {
     );
 }
 
+function buscarOpcoes(req, res) {
+    let id = req.params.id;
+
+    desafioModel.buscarOpcoes(id).then((resultado) => {
+        res.status(200).json(resultado);
+    });
+}
+
+function resolverDesafio(req, res) {
+    let idUsuario = req.body.idUsuarioServer;
+    let idDesafio = req.body.idDesafioServer;
+    let resposta = req.body.respostaServer;
+
+    desafioModel.resolverDesafio(idUsuario, idDesafio, resposta).then(
+        function(resultado) {
+            res.json(resultado);
+        }
+    ).catch(
+        function (erro) {
+            console.log(erro);
+            console.log(
+                "\nHouve um erro ao realizar o cadastro! Erro: ",
+                erro.sqlMessage
+            );
+            res.status(500).json(erro.sqlMessage);
+        }
+    );
+}
+
 module.exports = {
-    desafioDiario
+    desafioDiario,
+    buscarOpcoes,
+    resolverDesafio
 }
