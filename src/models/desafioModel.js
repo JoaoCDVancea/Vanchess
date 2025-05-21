@@ -33,9 +33,18 @@ function listarDesafios() {
     return database.executar(instrucaoSql);
 }
 
+function exibirDesafio(id) {
+    var instrucaoSql = `
+        SELECT * FROM Desafio WHERE idDesafio = '${id}';
+    `;
+
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     desafioDiario,
     buscarOpcoes,
     resolverDesafio,
-    listarDesafios
+    listarDesafios,
+    exibirDesafio
 }

@@ -67,9 +67,37 @@ function listarDesafios(req, res) {
     });
 }
 
+function exibirDesafio(req, res) {
+    let id = req.params.id;
+
+    desafioModel.exibirDesafio(id).then(function (resultado) {
+        console.log(`\nResultados encontrados: ${resultado.length}`);
+        console.log(`Resultados: ${JSON.stringify(resultado)}`);
+
+        if (resultado.length == 1) {
+            console.log(resultado);
+
+            res.json({
+                idDesafio: resultado[0].idDesafio,
+                jogador: resultado[0].jogador,
+                imagem: resultado[0].imagem,
+                explicacao: resultado[0].explicacao
+            });
+
+        } else {
+            res.status(403).send("Erro ao buscar desafio diário");
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("\nHouve um erro ao buscar odesafio diário! Erro: ", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
 module.exports = {
     desafioDiario,
     buscarOpcoes,
     resolverDesafio,
-    listarDesafios
+    listarDesafios,
+    exibirDesafio
 }
