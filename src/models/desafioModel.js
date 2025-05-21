@@ -25,8 +25,17 @@ function resolverDesafio(idUsuario, idDesafio, resposta) {
     return database.executar(instrucaoSql);
 }
 
+function listarDesafios() {
+    var instrucaoSql = `
+        SELECT idDesafio FROM Desafio WHERE data <= CURRENT_DATE ORDER BY idDesafio DESC;
+    `;
+
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     desafioDiario,
     buscarOpcoes,
-    resolverDesafio
+    resolverDesafio,
+    listarDesafios
 }

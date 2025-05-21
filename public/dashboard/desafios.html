@@ -22,7 +22,7 @@
                         <p>Desafio Diário</p>
                         <img src="../assets/icon/botaoDesafios.svg" alt="">
                     </div>
-                    <div class="botao">
+                    <div class="botao" onclick="listarDesafios()">
                         <p>Escolher Desafio</p>
                         <img src="../assets/icon/calendar.svg" alt="">
                     </div>
@@ -32,6 +32,7 @@
                     </div>
                 </div>
             </div>
+            <div id="listaDesafios" class="hide"></div>
             <div id="desafio"></div>
         </div>
     </div>
@@ -174,5 +175,41 @@
         });
 
         return false;
-    } 
+    }
+
+    function listarDesafios() {
+        fetch("/desafios/listarDesafios", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                console.log(resposta);
+                resposta.json().then(json => {
+                    listaDesafios.innerHTML = ``;
+                    console.log(json)
+                    json.forEach((desafio) => {
+                        console.log(desafio.idDesafio)
+                        listaDesafios.innerHTML += `
+                            <div class="desafioListado">
+                                <p>${desafio.idDesafio}</p>
+                            </div>
+                        `;
+
+                    });
+
+                    let element = document.getElementById("listaDesafios");
+                    element.classList.remove("hide");
+                });
+            } else {
+                console.log("Houve um erro ao tentar buscar o desafio!");
+                console.log(resposta.json.erro);
+            }
+        }).catch(function (erro) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+
+        return false;
+    }
 </script>

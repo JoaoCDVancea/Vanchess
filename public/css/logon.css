@@ -163,10 +163,33 @@ body {
     font-style: italic;
 }
 
-.hide {
-    display: none !important;
-}
-
 .pretas {
     background-color: #000000;
+}
+
+/* LISTA DESAFIOS */
+
+#listaDesafios {
+    display: flex;
+    gap: 30px;
+    padding-top: 30px;
+    border-top: 0.5px solid #8F8F8F;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+#listaDesafios .desafioListado{
+    border: 5px #4179b2 solid;
+    border-radius: 100%;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
+}
+
+
+.hide {
+    display: none !important;
 }

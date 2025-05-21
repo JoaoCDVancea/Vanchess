@@ -58,8 +58,18 @@ function resolverDesafio(req, res) {
     );
 }
 
+function listarDesafios(req, res) {
+    desafioModel.listarDesafios().then(function (resultado) {
+        console.log(`\nResultados encontrados: ${resultado.length}`);
+        console.log(`Resultados: ${JSON.stringify(resultado)}`);
+
+        res.status(200).json(resultado);
+    });
+}
+
 module.exports = {
     desafioDiario,
     buscarOpcoes,
-    resolverDesafio
+    resolverDesafio,
+    listarDesafios
 }

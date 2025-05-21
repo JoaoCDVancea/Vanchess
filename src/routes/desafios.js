@@ -15,4 +15,8 @@ router.post("/resolverDesafio", function(req,res) {
     desafioController.resolverDesafio(req, res);
 });
 
+router.get("/listarDesafios", function(req, res) {
+    desafioController.listarDesafios(req, res);
+})
+
 module.exports = router;
