@@ -85,6 +85,7 @@
                         `;
 
                         idDesafio = json.idDesafio;
+                        console.log(idDesafio);
 
                         fetch(`/desafios/buscar/${idDesafio}`, {
                             method: "GET",
@@ -187,10 +188,11 @@
                     listaDesafios.innerHTML = ``;
                     console.log(json)
                     json.forEach((desafio) => {
-                        console.log(desafio.idDesafio)
+                        let idDesafio = desafio.idDesafio;
+                        
                         listaDesafios.innerHTML += `
-                            <div class="desafioListado" onclick="exibirDesafio(${desafio.idDesafio})">
-                                <p>${desafio.idDesafio}</p>
+                            <div class="desafioListado" id="desafioListado${idDesafio}" onclick="exibirDesafio(${idDesafio})">
+                                <p>${idDesafio}</p>
                             </div>
                         `;
 
@@ -204,14 +206,14 @@
                 console.log(resposta.json.erro);
             }
         }).catch(function (erro) {
-            console.log(`#ERRO: ${resposta}`);
+            console.log(`#ERRO: ${erro}`);
         });
 
         return false;
     }
 
-    function exibirDesafio(idDesafio) {
-        fetch(`/desafios/exibirDesafio/${idDesafio}`, {
+    function exibirDesafio(idDesafioBuscar) {
+        fetch(`/desafios/exibirDesafio/${idDesafioBuscar}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -221,6 +223,15 @@
 
             if (resposta.ok) {
                 console.log(resposta);
+
+                let lista = document.querySelectorAll(`#listaDesafios div`);
+                lista.forEach((item) => {
+                    item.classList.remove(`selecionado`);
+                });
+
+                let element = document.getElementById(`desafioListado${idDesafioBuscar}`);
+                element.classList.add(`selecionado`);
+
                 resposta.json().then(json => {
                     let jogador;
                     let classJogador;
@@ -246,8 +257,9 @@
                                     <p>${json.explicacao}</p>
                                 </div>
                             </div>
-                        `;
+                    `;
 
+                    console.log("JSON.ID DESAFIO: " + json.idDesafio);
                     idDesafio = json.idDesafio;
 
                     fetch(`/desafios/buscar/${idDesafio}`, {
@@ -284,6 +296,8 @@
                         console.log(erro);
                     });
                 });
+
+                document.getElementById(`explicacao`).scrollIntoView;
             } else {
                 console.log("Houve um erro ao tentar buscar o desafio!");
 
@@ -292,7 +306,7 @@
                 });
             }
         }).catch(function (erro) {
-
+            console.log(`#ERRO: ${erro}`);
         });
 
         return false;

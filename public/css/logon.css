@@ -186,9 +186,15 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 50px;
+    font-size: 60px;
+    font-weight: 600;
 }
 
+#listaDesafios .selecionado {
+    border-color: #4179b2;
+    background-color: #4179b2;
+    color: #FFFFFF;
+}
 
 .hide {
     display: none !important;
