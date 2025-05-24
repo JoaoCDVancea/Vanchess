@@ -176,7 +176,8 @@ body {
     border-top: 0.5px solid #8F8F8F;
     width: 100%;
     flex-wrap: wrap;
-}
+
+}   
 
 #listaDesafios .desafioListado{
     border: 5px #4179b2 solid;

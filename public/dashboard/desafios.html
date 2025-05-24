@@ -40,12 +40,13 @@
 
 </html>
 <script>
+    let idDesafioDiario;
     let desafioResolvido;
     let idDesafio;
 
-    function desafioDiario() {
-        let id;
+    buscarDesafioDiario();
 
+    function buscarDesafioDiario() {
         fetch("/desafios/desafioDiario", {
             method: "GET",
             headers: {
@@ -58,68 +59,8 @@
                 if (resposta.ok) {
                     console.log(resposta);
                     resposta.json().then(json => {
-                        let jogador;
-                        let classJogador;
-
-                        if (json.jogador == 0) {
-                            jogador = 'Brancas';
-                            classJogador = 'brancas';
-                        } else {
-                            jogador = 'Pretas';
-                            classJogador = 'pretas';
-                        }
-
-                        desafio.innerHTML = `
-                            <img src="${json.imagem}" alt="">
-                            <div class="desafio-conteudo">
-                                <div class="jogador">
-                                    <div class="circulo ${classJogador}"></div>
-                                    <p>${jogador} Jogam</p>
-                                </div>
-                                <div id="botoes"></div>
-                                <div id="explicacao" class="hide">
-                                    <h1>Explicação</h1>
-                                    <p>${json.explicacao}</p>
-                                </div>
-                            </div>
-                        `;
-
-                        idDesafio = json.idDesafio;
-                        console.log(idDesafio);
-
-                        fetch(`/desafios/buscar/${idDesafio}`, {
-                            method: "GET",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                        }).then(
-                            function (resposta) {
-                                console.log("Estou puxando os desafios");
-
-                                if (resposta.ok) {
-                                    console.log(resposta);
-                                    resposta.json().then(json => {
-                                        json.forEach((opcao) => {
-                                            botoes.innerHTML += `
-                                                <div class="botao" id="botao${opcao.idOpcao}" onclick="resolverDesafio(${opcao.correta}, ${opcao.idOpcao})">
-                                                    <p>${opcao.descricao}</p>
-                                                </div>
-                                            `;
-                                        });
-                                    });
-
-                                    desafioResolvido = 0;
-                                } else {
-                                    console.log("Houve um erro ao tentar buscar o desafio!");
-
-                                    resposta.text().then(texto => {
-                                        console.error(texto);
-                                    });
-                                }
-                            }
-                        ).catch(function (erro) {
-                            console.log(erro);
-                        });
+                        idDesafioDiario = json.idDesafio;
+                        console.log(idDesafioDiario);
                     });
                 } else {
                     console.log("Houve um erro ao tentar buscar o desafio!");
@@ -132,10 +73,11 @@
                 console.log(erro);
             });
 
-        let element = document.getElementById("botoes");
-        element.scrollIntoView({ behavior: "smooth" });
+            return false;
+    }
 
-        return false;
+    function desafioDiario() {
+        exibirDesafio(idDesafioDiario);
     }
 
     function resolverDesafio(correto, idBotao) {
@@ -189,13 +131,17 @@
                     console.log(json)
                     json.forEach((desafio) => {
                         let idDesafio = desafio.idDesafio;
-                        
+
                         listaDesafios.innerHTML += `
                             <div class="desafioListado" id="desafioListado${idDesafio}" onclick="exibirDesafio(${idDesafio})">
                                 <p>${idDesafio}</p>
                             </div>
                         `;
-
+                        
+                        if(idDesafio == idDesafioDiario) {
+                            let element = document.getElementById(`desafioListado${idDesafio}`);
+                            element.classList.add('hide');
+                        }
                     });
 
                     let element = document.getElementById("listaDesafios");
