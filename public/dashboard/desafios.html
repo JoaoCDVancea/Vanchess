@@ -110,10 +110,10 @@
                 desafioResolvido = 1;
 
                 botoesDesafios.innerHTML = `
-                    <div id="botaoProximo" class="botao">
+                    <div id="botaoProximo" class="botao" onclick="proximoDesafio()">
                         ←   Próximo Desafio
                     </div>
-                    <div id="botaoAnterior" class="botao">
+                    <div id="botaoAnterior" class="botao" onclick="desafioAnterior()">
                         Desafio Anterior   → 
                     </div>
                 `;
@@ -127,7 +127,7 @@
                     let element = document.getElementById("botaoAnterior");
                     element.classList.add("botaoDesativado");
                 }
-                
+
             } else {
                 console.log("Houve um erro ao resolver o desafio!");
                 console.log(resposta.json.erro);
@@ -137,6 +137,16 @@
         });
 
         return false;
+    }
+
+    function proximoDesafio() {
+        let idProximoDesafio = idDesafio + 1;
+        exibirDesafio(idProximoDesafio);
+    }
+
+    function desafioAnterior() {
+        let idDesafioAnterior = idDesafio - 1;
+        exibirDesafio(idDesafioAnterior);
     }
 
     function listarDesafios() {
@@ -268,6 +278,8 @@
                 });
 
                 document.getElementById(`explicacao`).scrollIntoView;
+                botoesDesafios.innerHTML =  ``;
+
             } else {
                 console.log("Houve um erro ao tentar buscar o desafio!");
 
