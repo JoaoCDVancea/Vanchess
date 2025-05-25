@@ -34,6 +34,8 @@
             </div>
             <div id="listaDesafios" class="hide"></div>
             <div id="desafio"></div>
+            <div id="botoesDesafios"></div>
+            <div id="estatisticas"></div>
         </div>
     </div>
 </body>
@@ -106,6 +108,26 @@
                 explicacao.classList.remove("hide");
 
                 desafioResolvido = 1;
+
+                botoesDesafios.innerHTML = `
+                    <div id="botaoProximo" class="botao">
+                        ←   Próximo Desafio
+                    </div>
+                    <div id="botaoAnterior" class="botao">
+                        Desafio Anterior   → 
+                    </div>
+                `;
+
+                if(idDesafio == idDesafioDiario) {
+                    let element = document.getElementById("botaoProximo");
+                    element.classList.add("botaoDesativado");
+                }
+
+                if(idDesafio == 1) {
+                    let element = document.getElementById("botaoAnterior");
+                    element.classList.add("botaoDesativado");
+                }
+                
             } else {
                 console.log("Houve um erro ao resolver o desafio!");
                 console.log(resposta.json.erro);
@@ -175,8 +197,10 @@
                     item.classList.remove(`selecionado`);
                 });
 
-                let element = document.getElementById(`desafioListado${idDesafioBuscar}`);
-                element.classList.add(`selecionado`);
+                if(idDesafioBuscar != idDesafioDiario) {
+                    let element = document.getElementById(`desafioListado${idDesafioBuscar}`);
+                    element.classList.add(`selecionado`);
+                }
 
                 resposta.json().then(json => {
                     let jogador;
@@ -256,5 +280,9 @@
         });
 
         return false;
+    }
+
+    function exibirEstatisticas() {
+        
     }
 </script>
