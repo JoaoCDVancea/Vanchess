@@ -41,6 +41,7 @@
 </body>
 
 </html>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     let idDesafioDiario;
     let desafioResolvido;
@@ -337,7 +338,37 @@
                 }).then((resposta) => {
                     if (resposta.ok) {
                         resposta.json().then((json) => {
-                            estatisticas.innerHTML += `<br> respostas totais: ${json[0].respostasTotais}, respostas corretas: ${json[0].respostasCorretas}`;
+                            estatisticas.innerHTML += `
+                                <div class="canvas">
+                                    <canvas id="myChart"></canvas>
+                                </div>
+                            `;
+
+                            var ctx = document.getElementById("myChart");
+                            var myChart = new Chart(ctx, {
+                                type: 'doughnut',
+                                data: {
+                                    labels: ["Número de Acertos", "Respostas Totais"],
+                                    datasets: [{
+                                        label: 'Quantidade:',
+                                        data: [json[0].respostasCorretas, (json[0].respostasTotais - json[0].respostasCorretas)],
+                                        backgroundColor: [
+                                            'rgba(65,121,178)',
+                                            'rgba(237,235,236)'
+                                        ],
+                                        /* borderColor: [
+                                            'rgba(255,99,132,1)0',
+                                        ], */
+                                        borderWidth: 1,
+                                        
+                                    }]
+                                },
+                                options: {
+                                    rotation: -90,
+                                    circumference: 180,
+                                    cutout: '80%'
+                                }
+                            });
                         });
                     }
                 }).catch((erro) => {
