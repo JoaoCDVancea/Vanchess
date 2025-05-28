@@ -11,7 +11,7 @@ function desafioDiario() {
 
 function buscarOpcoes(id) {
     var instrucaoSql = `
-        SELECT * FROM Opcao WHERE fkDesafio = '${id}'
+        SELECT * FROM Opcao WHERE fkDesafio = '${id}';
     `;
 
     return database.executar(instrucaoSql);

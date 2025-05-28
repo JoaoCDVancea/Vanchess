@@ -22,7 +22,7 @@
                         <p>Desafio Diário</p>
                         <img src="../assets/icon/botaoDesafios.svg" alt="">
                     </div>
-                    <div class="botao" onclick="listarDesafios()">
+                    <div class="botao" onclick="exibirListaDesafios()">
                         <p>Escolher Desafio</p>
                         <img src="../assets/icon/calendar.svg" alt="">
                     </div>
@@ -35,7 +35,7 @@
             <div id="listaDesafios" class="hide"></div>
             <div id="desafio"></div>
             <div id="botoesDesafios"></div>
-            <div id="estatisticas"></div>
+            <div id="estatisticas" class="hide"></div>
         </div>
     </div>
 </body>
@@ -47,6 +47,7 @@
     let idDesafio;
 
     buscarDesafioDiario();
+    listarDesafios();
 
     function buscarDesafioDiario() {
         fetch("/desafios/desafioDiario", {
@@ -75,7 +76,7 @@
                 console.log(erro);
             });
 
-            return false;
+        return false;
     }
 
     function desafioDiario() {
@@ -118,15 +119,17 @@
                     </div>
                 `;
 
-                if(idDesafio == idDesafioDiario) {
+                if (idDesafio == idDesafioDiario) {
                     let element = document.getElementById("botaoProximo");
                     element.classList.add("botaoDesativado");
                 }
 
-                if(idDesafio == 1) {
+                if (idDesafio == 1) {
                     let element = document.getElementById("botaoAnterior");
                     element.classList.add("botaoDesativado");
                 }
+
+                exibirEstatisticas();
 
             } else {
                 console.log("Houve um erro ao resolver o desafio!");
@@ -169,15 +172,15 @@
                                 <p>${idDesafio}</p>
                             </div>
                         `;
-                        
-                        if(idDesafio == idDesafioDiario) {
+
+                        if (idDesafio == idDesafioDiario) {
                             let element = document.getElementById(`desafioListado${idDesafio}`);
                             element.classList.add('hide');
                         }
                     });
 
-                    let element = document.getElementById("listaDesafios");
-                    element.classList.remove("hide");
+                    /* let element = document.getElementById("listaDesafios");
+                    element.classList.remove("hide"); */
                 });
             } else {
                 console.log("Houve um erro ao tentar buscar o desafio!");
@@ -188,6 +191,16 @@
         });
 
         return false;
+    }
+
+    function exibirListaDesafios() {
+        let element = document.getElementById("listaDesafios");
+
+        if (element.classList.contains("hide")) {
+            element.classList.remove("hide");
+        } else {
+            element.classList.add("hide");
+        }
     }
 
     function exibirDesafio(idDesafioBuscar) {
@@ -207,7 +220,7 @@
                     item.classList.remove(`selecionado`);
                 });
 
-                if(idDesafioBuscar != idDesafioDiario) {
+                if (idDesafioBuscar != idDesafioDiario) {
                     let element = document.getElementById(`desafioListado${idDesafioBuscar}`);
                     element.classList.add(`selecionado`);
                 }
@@ -277,8 +290,11 @@
                     });
                 });
 
-                document.getElementById(`explicacao`).scrollIntoView;
-                botoesDesafios.innerHTML =  ``;
+                let estatisticas = document.getElementById("estatisticas");
+                estatisticas.scrollIntoView;
+                estatisticas.classList.add("hide");
+
+                botoesDesafios.innerHTML = ``;
 
             } else {
                 console.log("Houve um erro ao tentar buscar o desafio!");
@@ -295,6 +311,42 @@
     }
 
     function exibirEstatisticas() {
-        
+        fetch(`/estatisticas/numeroJogadores/${idDesafio}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then((resposta) => {
+            if (resposta.ok) {
+                resposta.json().then((json) => {
+                    let numeroJogadores = json[0].numeroJogadores;
+
+                    let textoPessoas = numeroJogadores == 1 ? 'pessoa já respondeu' : 'pessoas já responderam';
+                    let textoDesafio = idDesafio == idDesafioDiario ? 'o desafio de hoje' : 'a este desafio!';
+
+                    estatisticas.innerHTML = `
+                        <p><span>${numeroJogadores}</span> ${textoPessoas} ${textoDesafio}</p>
+                    `;
+                });
+
+                fetch(`/estatisticas/respostasCorretas/${idDesafio}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then((resposta) => {
+                    if (resposta.ok) {
+                        resposta.json().then((json) => {
+                            estatisticas.innerHTML += `<br> respostas totais: ${json[0].respostasTotais}, respostas corretas: ${json[0].respostasCorretas}`;
+                        });
+                    }
+                }).catch((erro) => {
+                    console.log(`erro: ${erro}`);
+                })
+
+                let estatisticas = document.getElementById("estatisticas");
+                estatisticas.classList.remove("hide");
+            }
+        });
     }
 </script>
