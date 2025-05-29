@@ -344,8 +344,28 @@
                                 </div>
                             `;
 
+                            let respostasCorretas = json[0].respostasCorretas;
+                            let respostasTotais = json[0].respostasTotais;
+
+                            let porcentagemAcertos = (respostasCorretas / respostasTotais) * 100;
+
                             var ctx = document.getElementById("myChart");
-                            var myChart = new Chart(ctx, {
+
+                            const data = {
+                                labels: ["Número de Acertos", "Respostas Totais"],
+                                datasets: [{
+                                    label: 'Quantidade:',
+                                    data: [respostasCorretas, (respostasTotais - respostasCorretas)],
+                                    backgroundColor: [
+                                        'rgba(65,121,178)',
+                                        'rgba(237,235,236)'
+                                    ],
+                                    borderWidth: 1,
+
+                                }]
+                            }
+
+                            /* var myChart = new Chart(ctx, {
                                 type: 'doughnut',
                                 data: {
                                     labels: ["Número de Acertos", "Respostas Totais"],
@@ -356,11 +376,8 @@
                                             'rgba(65,121,178)',
                                             'rgba(237,235,236)'
                                         ],
-                                        /* borderColor: [
-                                            'rgba(255,99,132,1)0',
-                                        ], */
                                         borderWidth: 1,
-                                        
+
                                     }]
                                 },
                                 options: {
@@ -368,7 +385,39 @@
                                     circumference: 180,
                                     cutout: '80%'
                                 }
-                            });
+                            }); */
+
+                            let centerTextLine = {
+                                id: 'centerTextLine',
+                                beforeDatasetDraw(chart, args, plugins) {
+                                    const { ctx, dataset } = chart;
+
+                                    const xCenter = (chart.getDatasetMeta(0).data[0].x);
+                                    const yCenter = (chart.getDatasetMeta(0).data[0].y - 30);
+
+                                    ctx.save();
+                                    ctx.font = 'bold 70px sans-serif';
+                                    ctx.fillStyle = 'black';
+                                    ctx.textAlign = 'center';
+                                    ctx.fillText(`${porcentagemAcertos.toFixed(0)}%`, xCenter, yCenter);
+                                }
+                            }
+
+                            const config = {
+                                type: 'doughnut',
+                                data,
+                                options: {
+                                    rotation: -90,
+                                    circumference: 180,
+                                    cutout: '75%'
+                                },
+                                plugins: [centerTextLine]
+                            };
+
+                            const myChart = new Chart(
+                                ctx,
+                                config
+                            )
                         });
                     }
                 }).catch((erro) => {
