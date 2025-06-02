@@ -12,7 +12,6 @@ function respostasCorretas(req, res) {
     let id = req.params.idDesafio;
 
     estatisticaModel.respostasCorretas(id).then((resultado) => {
-
         res.status(200).json(resultado);
     });
 }

@@ -17,9 +17,10 @@ function buscarOpcoes(id) {
     return database.executar(instrucaoSql);
 }
 
-function resolverDesafio(idUsuario, idDesafio, resposta) {
+function resolverDesafio(idUsuario, idDesafio, resposta, tempoConclusao) {
     var instrucaoSql = `
-        INSERT INTO DesafioResolvido(fkUsuario, fkDesafio, resposta) VALUES ('${idUsuario}', '${idDesafio}', '${resposta}');
+        INSERT INTO DesafioResolvido(fkUsuario, fkDesafio, resposta, tempoConclusao) VALUES 
+            ('${idUsuario}', '${idDesafio}', '${resposta}', '${tempoConclusao}');
     `;
 
     return database.executar(instrucaoSql);

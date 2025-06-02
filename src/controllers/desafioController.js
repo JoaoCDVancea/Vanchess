@@ -41,8 +41,9 @@ function resolverDesafio(req, res) {
     let idUsuario = req.body.idUsuarioServer;
     let idDesafio = req.body.idDesafioServer;
     let resposta = req.body.respostaServer;
+    let tempoConclusao = req.body.tempoConclusaoServer;
 
-    desafioModel.resolverDesafio(idUsuario, idDesafio, resposta).then(
+    desafioModel.resolverDesafio(idUsuario, idDesafio, resposta, tempoConclusao).then(
         function (resultado) {
             res.json(resultado);
         }
