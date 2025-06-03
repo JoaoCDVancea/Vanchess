@@ -16,7 +16,16 @@ function respostasCorretas(req, res) {
     });
 }
 
+function tempoConclusaoMedio(req, res) {
+    let id = req.params.idDesafio;
+
+    estatisticaModel.tempoConclusaoMedio(id).then((resultado) => {
+        res.status(200).json(resultado);
+    });
+}
+
 module.exports = {
     numeroJogadores,
-    respostasCorretas
+    respostasCorretas,
+    tempoConclusaoMedio
 }

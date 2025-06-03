@@ -11,7 +11,7 @@ function numeroJogadores(idDesafio) {
 }
 
 function respostasCorretas(idDesafio) {
-    var instrucaoSql =  `
+    var instrucaoSql = `
         SELECT 
             COUNT(*) as respostasTotais,
             (SELECT COUNT(*) FROM DesafioResolvido WHERE fkDesafio = '${idDesafio}' AND resposta = 1) as respostasCorretas
@@ -22,7 +22,19 @@ function respostasCorretas(idDesafio) {
     return database.executar(instrucaoSql);
 }
 
+function tempoConclusaoMedio(idDesafio) {
+    let instrucaoSql = `
+        SELECT 
+            AVG(tempoConclusao) AS tempoConclusaoMedio
+        FROM DesafioResolvido
+        WHERE fkDesafio = '${idDesafio}';    
+    `;
+
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     numeroJogadores,
-    respostasCorretas
+    respostasCorretas,
+    tempoConclusaoMedio
 }
