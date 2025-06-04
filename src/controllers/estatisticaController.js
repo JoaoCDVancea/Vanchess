@@ -24,8 +24,18 @@ function tempoConclusaoMedio(req, res) {
     });
 }
 
+function estatisticasDesafio(req, res) {
+    let id = req.body.idDesafioServer;
+    let tempoConclusao = req.body.tempoConclusaoServer;
+
+    estatisticaModel.estatisticasDesafio(id, tempoConclusao).then((resultado) => {
+        res.status(200).json(resultado);
+    });
+}
+
 module.exports = {
     numeroJogadores,
     respostasCorretas,
-    tempoConclusaoMedio
+    tempoConclusaoMedio,
+    estatisticasDesafio
 }

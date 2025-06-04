@@ -15,4 +15,8 @@ router.get("/tempoConclusaoMedio/:idDesafio", function(req, res) {
     estatisticaController.tempoConclusaoMedio(req, res);
 });
 
+router.post("/estatisticasDesafio", function(req, res) {
+    estatisticaController.estatisticasDesafio(req, res);
+});
+
 module.exports = router;

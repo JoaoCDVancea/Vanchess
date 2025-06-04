@@ -320,17 +320,24 @@
 
     async function exibirEstatisticas() {
         try {
-            const respostaJogadores = await fetch(`/estatisticas/numeroJogadores/${idDesafio}`, {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json' }
+            const estatisticasDesafio = await fetch(`/estatisticas/estatisticasDesafio`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    idDesafioServer: idDesafio,
+                    tempoConclusaoServer: tempoConclusao
+                })
             });
 
-            if (!respostaJogadores.ok) {
+            if (!estatisticasDesafio.ok) {
+                estatisticasDesafio.text().then(texto => {
+                    console.error(texto);
+                });
                 return;
             }
 
-            const jsonJogadores = await respostaJogadores.json();
-            const numeroJogadores = jsonJogadores[0].numeroJogadores;
+            const jsonEstatisticas = await estatisticasDesafio.json();
+            const numeroJogadores = jsonEstatisticas[0].numeroJogadores;
 
             const textoPessoas = numeroJogadores == 1 ? 'pessoa já respondeu' : 'pessoas já responderam';
             const textoDesafio = idDesafio == idDesafioDiario ? 'o desafio de hoje' : 'a este desafio!';
@@ -340,21 +347,13 @@
                 <p><span>${numeroJogadores}</span> ${textoPessoas} ${textoDesafio}</p>
             `;
 
-            const respostaCorretas = await fetch(`/estatisticas/respostasCorretas/${idDesafio}`, {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json' }
-            });
-
-            if (!respostaCorretas.ok) {
-                return;
-            }
-
-            const jsonCorretas = await respostaCorretas.json();
-
             estatisticas.innerHTML += `
                 <div id="conteudoEstatisticas">
                     <div id="porcentagemAcertos">
-                        <h1>Porcentagem Acertos</h1>
+                        <div>
+                            <h1>Porcentagem de Acertos</h1>
+                            <p class="subtitulo">(dentre todos os usuários)</p>
+                        </div>
                         <div class="canvas">
                             <canvas id="myChart"></canvas>
                         </div>
@@ -362,8 +361,8 @@
                 </div>
             `;
 
-            const respostasCorretas = jsonCorretas[0].respostasCorretas;
-            const respostasTotais = jsonCorretas[0].respostasTotais;
+            const respostasCorretas = jsonEstatisticas[0].respostasCorretas;
+            const respostasTotais = jsonEstatisticas[0].respostasTotais;
 
             const porcentagemAcertos = (respostasCorretas / respostasTotais) * 100;
 
@@ -418,29 +417,26 @@
 
             new Chart(ctx, config);
 
-            const respostaTempoMedio = await fetch(`/estatisticas/tempoConclusaoMedio/${idDesafio}`, {
-                method: 'GET',
-                headers: {'Content-Type': 'application/json'}
-            });
-
-            if(!respostaTempoMedio.ok) {
-                console.log("Houve um erro ao tentar buscar o erro medio!");
-                console.log(respostaTempoMedio.json.erro);
-                return;
-            }
-
-            const jsonTempoMedio = await respostaTempoMedio.json();
-            const tempoMedio = jsonTempoMedio[0].tempoConclusaoMedio;
-
+            const tempoMedio = jsonEstatisticas[0].tempoConclusaoMedio;
+            const qtdTemposMenores = jsonEstatisticas[0].qtdTemposMenores;
+            console.log(jsonEstatisticas);
             const conteudoEstatisticas = document.getElementById("conteudoEstatisticas");
 
-            const novoDiv = document.createElement("div");
-            novoDiv.innerHTML = `
-                <p>Você completou o desafio em ${tempoConclusao} segundos</p>
-                <p>O tempo de conclusão médio é de ${Math.floor(tempoMedio)} segundos</p>
+            let percentil = Math.floor(qtdTemposMenores / respostasTotais * 100);
+
+            const divTempoConclusao = document.createElement("div");
+            divTempoConclusao.id = 'tempoConclusao'
+            divTempoConclusao.innerHTML = `
+                <h1>Tempo de Conclusão</h1>
+                <p>Seu tempo: <span>${tempoConclusao}</span> segundos</p>
+                <div>
+                    <p>Tempo médio: <span>${Math.floor(tempoMedio)}</span> segundos</p>
+                    <p class="subtitulo">(dentre todos os usuários)</p>
+                </div>
+                <p>Você ficou entre os <span>${percentil}%</span> mais rápidos!</p>
             `;
 
-            conteudoEstatisticas.appendChild(novoDiv);
+            conteudoEstatisticas.appendChild(divTempoConclusao);
 
             estatisticas.classList.remove("hide");
 

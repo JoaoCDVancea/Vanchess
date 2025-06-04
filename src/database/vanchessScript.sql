@@ -104,4 +104,22 @@ INSERT INTO Opcao(fkDesafio, idOpcao, descricao, correta) VALUES
 ALTER TABLE DesafioResolvido
 ADD COLUMN tempoConclusao INT;
 
-SELECT * FROM DesafioResolvido;
+SELECT * FROM DesafioResolvido
+ORDER BY data DESC;
+
+SELECT 
+	AVG(tempoConclusao) AS tempoConclusaoMedio
+FROM DesafioResolvido
+WHERE fkDesafio = 17;
+
+/* DESAFIO 19 */
+INSERT INTO Desafio(data, jogador, imagem, explicacao) VALUES
+	('2025-06-03', 1, 'https://iili.io/FJhcHVS.png', 'Sacrifindo a torre em Th1+, as pretas abrem oportunidade para uma sequência de mate.
+    Após as brancas capturarem a torre com Rxh1, as pretas atacam com Dh4+, e, posteriormente, xeque-mate com Dh2#');
+    
+INSERT INTO Opcao(fkDesafio, idOpcao, descricao, correta) VALUES
+	(19, 1, 'cxb6', 0),
+    (19, 2, 'Cf4', 0),
+    (19, 3, 'a6', 0),
+    (19, 4, 'Th1+', 1);
+
