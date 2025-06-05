@@ -55,7 +55,16 @@ function autenticar(req, res) {
     );
 }
 
+function verificarAdmin(req, res) {
+    let id = req.params.idUsuario;
+
+    usuarioModel.verificarAdmin(id).then((resultado) => {
+        res.status(200).json(resultado);
+    });
+}
+
 module.exports = {
     cadastrar,
-    autenticar
+    autenticar,
+    verificarAdmin
 }

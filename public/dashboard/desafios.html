@@ -9,8 +9,11 @@
 </head>
 
 <body>
-    <div class="navbar">
-        <p></p>
+    <div id="navbar">
+        <a href="../dashboard/desafios.html"><div class="navbar-link">
+            <p>Desafios</p>
+            <img src="../assets/icon/botaoDesafios.svg" alt="">
+        </div></a>
     </div>
     <div class="conteudo">
         <div class="section">
@@ -41,6 +44,7 @@
 </body>
 
 </html>
+<script src="../js/navbar.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     let tempoInicial;
@@ -418,11 +422,11 @@
             new Chart(ctx, config);
 
             const tempoMedio = jsonEstatisticas[0].tempoConclusaoMedio;
-            const qtdTemposMenores = jsonEstatisticas[0].qtdTemposMenores;
-            console.log(jsonEstatisticas);
-            const conteudoEstatisticas = document.getElementById("conteudoEstatisticas");
+            const qtdMaisLentos = jsonEstatisticas[0].qtdMaisLentos;
 
-            let percentil = Math.floor(qtdTemposMenores / respostasTotais * 100);
+            let percentil = Math.floor(qtdMaisLentos / respostasTotais * 100);
+
+            const conteudoEstatisticas = document.getElementById("conteudoEstatisticas");
 
             const divTempoConclusao = document.createElement("div");
             divTempoConclusao.id = 'tempoConclusao'

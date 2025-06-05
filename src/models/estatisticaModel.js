@@ -7,7 +7,7 @@ function estatisticasDesafio(idDesafio, tempoConclusao) {
             COUNT(*) AS respostasTotais,
             (SELECT COUNT(*) FROM DesafioResolvido WHERE fkDesafio = '${idDesafio}' AND resposta = 1) as respostasCorretas,
             AVG(tempoConclusao) AS tempoConclusaoMedio,
-            (SELECT COUNT(*) FROM DesafioResolvido WHERE tempoConclusao < '${tempoConclusao}' AND fkDesafio = '${idDesafio}') AS qtdTemposMenores
+            (SELECT COUNT(*) FROM DesafioResolvido WHERE tempoConclusao <= '${tempoConclusao}' AND fkDesafio = '${idDesafio}') AS qtdMaisLentos
         FROM DesafioResolvido
         WHERE fkDesafio = '${idDesafio}';
     `;

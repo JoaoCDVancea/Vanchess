@@ -22,7 +22,16 @@ function autenticar(email, senha) {
     return database.executar(instrucaoSql);
 }
 
+function verificarAdmin(id) {
+    let instrucaoSql = `
+        SELECT isAdmin FROM Usuario WHERE idUsuario = '${id}';
+    `;
+
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     cadastrar,
-    autenticar
+    autenticar,
+    verificarAdmin
 }

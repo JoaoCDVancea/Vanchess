@@ -11,11 +11,29 @@ body {
     flex-direction: row;
 }
 
-.navbar {
+a {
+    all: unset;
+}
+
+/* NAVBAR */
+
+#navbar {
     width: 15vw;
     height: 100vh;
     background-color: #4179b2;
     position: fixed;
+}
+
+#navbar .navbar-link{
+    display: flex;
+    gap: 10px;
+    cursor: pointer;
+}
+
+#navbar .navbar-link p {
+    font-size: 40px;
+    color: #FFFFFF;
+    font-weight: 500;
 }
 
 .conteudo {

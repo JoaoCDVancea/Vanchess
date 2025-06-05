@@ -11,4 +11,8 @@ router.post("/autenticar", function(req,res) {
     usuarioController.autenticar(req, res);
 });
 
+router.get("/verificarAdmin/:idUsuario", function(req, res) {
+    usuarioController.verificarAdmin(req, res);
+});
+
 module.exports = router;
