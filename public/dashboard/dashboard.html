@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="../css/logon.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
 </head>
 <body>
     <div id="navbar">
@@ -12,7 +13,31 @@
             <p>Desafios</p>
             <img src="../assets/icon/botaoDesafios.svg" alt="">
         </div></a>
-    </div>   
+    </div>
+    <div id="conteudo">
+        <div id="botoes">
+            <div id="botaoUsuarios" class="botao ativo" onclick="alterarDash('usuarios')">
+                <p>Usuários</p>
+            </div>
+            <div id="botaoDesafios" class="botao" onclick="alterarDash('desafios')">
+                <p>Desafios</p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
 <script src="../js/navbar.js"></script>
+<script>
+    function alterarDash(dashboard) {
+        let botaoUsuarios = document.getElementById('botaoUsuarios');
+        let botaoDesafios = document.getElementById('botaoDesafios');
+
+        if(dashboard == 'usuarios') {
+            botaoUsuarios.classList.add('ativo');
+            botaoDesafios.classList.remove('ativo');
+        } else if(dashboard == 'desafios') {
+            botaoDesafios.classList.add('ativo');
+            botaoUsuarios.classList.remove('ativo');
+        }
+    }
+</script>

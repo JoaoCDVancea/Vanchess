@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+* {
+    padding: 0px;
+    margin: 0px;
+    font-family: 'DM Sans', sans-serif;
+}
+
+a {
+    all: unset;
+}
+
+/* NAVBAR */
+
+#navbar {
+    width: 15vw;
+    height: 100vh;
+    background-color: #4179b2;
+    position: fixed;
+}
+
+#navbar .navbar-link{
+    display: flex;
+    gap: 10px;
+    cursor: pointer;
+}
+
+#navbar .navbar-link p {
+    font-size: 40px;
+    color: #FFFFFF;
+    font-weight: 500;
+}

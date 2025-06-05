@@ -1,0 +1,27 @@
+#conteudo {
+    margin-left: 15vw;
+    padding-top: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+#conteudo #botoes {
+    display: flex;
+
+}
+
+#conteudo #botoes .botao {
+    font-size: 60px;
+    padding: 0px 40px 0px 40px;
+    cursor: pointer;
+}
+
+#conteudo #botoes #botaoUsuarios {
+    border-right: 1px #000000 solid;
+}
+
+
+.ativo {
+    border-bottom: 6px #4179b2 solid;
+    color: #6696c6;
+}

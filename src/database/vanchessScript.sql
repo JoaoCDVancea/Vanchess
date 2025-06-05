@@ -108,9 +108,12 @@ SELECT * FROM DesafioResolvido
 ORDER BY data DESC;
 
 SELECT 
-	AVG(tempoConclusao) AS tempoConclusaoMedio
+	COUNT(*) AS respostasTotais,
+    (SELECT COUNT(*) FROM DesafioResolvido WHERE fkDesafio = '${idDesafio}' AND resposta = 1) as respostasCorretas,
+	AVG(tempoConclusao) AS tempoConclusaoMedio,
+    (SELECT COUNT(*) FROM DesafioResolvido WHERE tempoConclusao < '${tempoConclusao}' AND fkDesafio = '${idDesafio}') AS qtdTemposMenores
 FROM DesafioResolvido
-WHERE fkDesafio = 17;
+WHERE fkDesafio = '${idDesafio}';
 
 /* DESAFIO 19 */
 INSERT INTO Desafio(data, jogador, imagem, explicacao) VALUES
@@ -122,4 +125,25 @@ INSERT INTO Opcao(fkDesafio, idOpcao, descricao, correta) VALUES
     (19, 2, 'Cf4', 0),
     (19, 3, 'a6', 0),
     (19, 4, 'Th1+', 1);
+    
+            SELECT COUNT(DISTINCT fkUsuario) as numeroJogadores,
+            COUNT(*) AS respostasTotais,
+            (SELECT COUNT(*) FROM DesafioResolvido WHERE fkDesafio = 17 AND resposta = 1) as respostasCorretas,
+            AVG(tempoConclusao) AS tempoConclusaoMedio,
+            (SELECT COUNT(*) FROM DesafioResolvido WHERE tempoConclusao < 10 AND fkDesafio = 17) AS qtdTemposMenores
+        FROM DesafioResolvido
+        WHERE fkDesafio = 17;
 
+/* DESAFIO 20 */
+INSERT INTO Desafio(data, jogador, imagem, explicacao) VALUES
+	('2025-06-04', 1, 'https://iili.io/FdXloT7.png', 'Ao jogarem Bf6, as pretas aproveitam uma oportunidade, sendo a única escapatória
+	da dama branca a casa de c4, porém assim, pretas acabando ganhando uma torre inteira com Bxa1');
+    
+INSERT INTO Opcao(fkDesafio, idOpcao, descricao, correta) VALUES
+	(20, 1, 'De6', 0),
+    (20, 2, 'Bf6', 1),
+    (20, 3, 'Tac8', 0),
+    (20, 4, 'Bg5', 0);
+    
+SELECT * FROM Desafio;
+    
