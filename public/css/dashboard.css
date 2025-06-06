@@ -2,12 +2,13 @@
     margin-left: 15vw;
     padding-top: 40px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center ;
+    gap: 40px;
 }
 
 #conteudo #botoes {
     display: flex;
-
 }
 
 #conteudo #botoes .botao {
@@ -20,6 +21,9 @@
     border-right: 1px #000000 solid;
 }
 
+.tituloGrafico {
+    font-size: 30px;
+}
 
 .ativo {
     border-bottom: 6px #4179b2 solid;

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +8,15 @@
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/dashboard.css">
 </head>
+
 <body>
     <div id="navbar">
-        <a href="../dashboard/desafios.html" class="link"><div class="navbar-link">
-            <p>Desafios</p>
-            <img src="../assets/icon/botaoDesafios.svg" alt="">
-        </div></a>
+        <a href="../dashboard/desafios.html" class="link">
+            <div class="navbar-link">
+                <p>Desafios</p>
+                <img src="../assets/icon/botaoDesafios.svg" alt="">
+            </div>
+        </a>
     </div>
     <div id="conteudo">
         <div id="botoes">
@@ -23,21 +27,85 @@
                 <p>Desafios</p>
             </div>
         </div>
+        <div id="telaUsuarios">
+            <div>
+
+            </div>
+        </div>
+        <div id="telaDesafios">
+            <div id="graficoResolucoesPeriodo" class="tituloGrafico">
+                <h1>Resoluções Por Período</h1> 
+                <canvas id="canvasResolucoesPeriodo"></canvas>
+            </div>
+        </div>
     </div>
 </body>
+
 </html>
 <script src="../js/navbar.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     function alterarDash(dashboard) {
         let botaoUsuarios = document.getElementById('botaoUsuarios');
         let botaoDesafios = document.getElementById('botaoDesafios');
 
-        if(dashboard == 'usuarios') {
+        if (dashboard == 'usuarios') {
             botaoUsuarios.classList.add('ativo');
             botaoDesafios.classList.remove('ativo');
-        } else if(dashboard == 'desafios') {
+        } else if (dashboard == 'desafios') {
             botaoDesafios.classList.add('ativo');
             botaoUsuarios.classList.remove('ativo');
         }
+    }
+
+    graficoResolucoesPeriodo();
+
+    async function graficoResolucoesPeriodo() {
+        let respostaResolucoes = await fetch("/estatisticas/resolucoesPeriodo", {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!respostaResolucoes.ok) {
+            respostaResolucoes.text().then(texto => {
+                    console.error(texto);
+                });
+            return;
+        }
+
+        let jsonResolucoes = await respostaResolucoes.json();
+
+        let data = [];
+        let labels = [];
+
+        for (let i = 0; i < jsonResolucoes.length; i++) {
+            let diaAtual = jsonResolucoes[i];
+
+            labels.push(diaAtual.dataResolucao);
+            data.push(diaAtual.totalRespostas);
+        }
+
+        const graficoResolucoes = document.getElementById('canvasResolucoesPeriodo')
+
+        new Chart(graficoResolucoes, {
+            type: 'line',
+            data: {
+                labels,
+                datasets: [{
+                    label: 'Quantidade de Resoluções',
+                    data,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
     }
 </script>

@@ -11,10 +11,12 @@
 
 <body>
     <div id="navbar">
-        <a href="../dashboard/desafios.html"><div class="navbar-link">
-            <p>Desafios</p>
-            <img src="../assets/icon/botaoDesafios.svg" alt="">
-        </div></a>
+        <a href="../dashboard/desafios.html">
+            <div class="navbar-link">
+                <p>Desafios</p>
+                <img src="../assets/icon/botaoDesafios.svg" alt="">
+            </div>
+        </a>
     </div>
     <div class="conteudo">
         <div class="section">
@@ -54,37 +56,28 @@
     let idDesafio;
     let tempoConclusao;
 
-    buscarDesafioDiario();
-    listarDesafios();
+    async function carregarPagina() {
+        await buscarDesafioDiario();
+        await listarDesafios();
+    }
 
-    function buscarDesafioDiario() {
-        fetch("/desafios/desafioDiario", {
+    carregarPagina();
+
+    async function buscarDesafioDiario() {
+        let respostaDiaria = await fetch("/desafios/desafioDiario", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
-            },
-        }).then(
-            function (resposta) {
-                console.log("ESTOU NO THEN DO desafio diário()!");
+            }
+        });
 
-                if (resposta.ok) {
-                    console.log(resposta);
-                    resposta.json().then(json => {
-                        idDesafioDiario = json.idDesafio;
-                        console.log(idDesafioDiario);
-                    });
-                } else {
-                    console.log("Houve um erro ao tentar buscar o desafio!");
+        if(!respostaDiaria.ok) {
+            return;
+        }
 
-                    resposta.text().then(texto => {
-                        console.error(texto);
-                    });
-                }
-            }).catch(function (erro) {
-                console.log(erro);
-            });
+        let jsonDiario = await respostaDiaria.json();
 
-        return false;
+        idDesafioDiario = jsonDiario.idDesafio;
     }
 
     function desafioDiario() {
@@ -177,22 +170,16 @@
                     listaDesafios.innerHTML = ``;
                     console.log(json)
                     json.forEach((desafio) => {
-                        let idDesafio = desafio.idDesafio;
-
-                        listaDesafios.innerHTML += `
-                            <div class="desafioListado" id="desafioListado${idDesafio}" onclick="exibirDesafio(${idDesafio})">
-                                <p>${idDesafio}</p>
-                            </div>
-                        `;
-
-                        if (idDesafio == idDesafioDiario) {
-                            let element = document.getElementById(`desafioListado${idDesafio}`);
-                            element.classList.add('hide');
+                        let idDesafioLista = desafio.idDesafio;
+                     
+                        if (idDesafioLista != idDesafioDiario) {
+                            listaDesafios.innerHTML += `
+                                <div class="desafioListado" id="desafioListado${idDesafioLista}" onclick="exibirDesafio(${idDesafioLista})">
+                                    <p>${idDesafioLista}</p>
+                                </div>
+                            `;
                         }
                     });
-
-                    /* let element = document.getElementById("listaDesafios");
-                    element.classList.remove("hide"); */
                 });
             } else {
                 console.log("Houve um erro ao tentar buscar o desafio!");
