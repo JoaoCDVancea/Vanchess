@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Dashboard - Vanchess</title>
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/dashboard.css">
 </head>
@@ -28,13 +28,30 @@
             </div>
         </div>
         <div id="telaUsuarios">
-            <div>
-
+            <div id="graficoUsuariosPeriodo" class="grafico">
+                <h1 class="tituloGrafico">Usuários Ativos Por Período</h1> 
+                <div id="divOpcoes">
+                    <p>Selecione um período: </p>
+                    <select name="" id="slctPeriodoUsuariosAtivos" onchange="graficoUsuariosAtivosPeriodo()">
+                        <option value="semana">Última semana</option>
+                        <option value="mes">Último mês</option>
+                        <option value="dia">Último dia</option>
+                    </select>
+                </div>
+                <canvas id="canvasUsuariosAtivosPeriodo"></canvas>
             </div>
         </div>
-        <div id="telaDesafios">
-            <div id="graficoResolucoesPeriodo" class="tituloGrafico">
-                <h1>Resoluções Por Período</h1> 
+        <div id="telaDesafios" class="hide">
+            <div id="graficoResolucoesPeriodo" class="grafico">
+                <h1 class="tituloGrafico">Resoluções Por Período</h1> 
+                <div id="divOpcoes">
+                    <p>Selecione um período: </p>
+                    <select name="" id="slctPeriodoResolucoes" onchange="graficoResolucoesPeriodo()">
+                        <option value="semana">Última semana</option>
+                        <option value="mes">Último mês</option>
+                        <option value="dia">Último dia</option>
+                    </select>
+                </div>
                 <canvas id="canvasResolucoesPeriodo"></canvas>
             </div>
         </div>
@@ -45,23 +62,41 @@
 <script src="../js/navbar.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    let chartResolucoesPeriodo = null;
+    let chartUsuariosAtivosPeriodo = null;
+
+    alterarDash('usuarios');
+
     function alterarDash(dashboard) {
+        let telaUsuarios = document.getElementById('telaUsuarios');
+        let telaDesafios = document.getElementById('telaDesafios');
+
         let botaoUsuarios = document.getElementById('botaoUsuarios');
         let botaoDesafios = document.getElementById('botaoDesafios');
 
         if (dashboard == 'usuarios') {
+            telaUsuarios.classList.remove('hide');
+            telaDesafios.classList.add('hide');
+
             botaoUsuarios.classList.add('ativo');
             botaoDesafios.classList.remove('ativo');
+
+            graficoUsuariosAtivosPeriodo();
         } else if (dashboard == 'desafios') {
+            telaDesafios.classList.remove('hide');
+            telaUsuarios.classList.add('hide');
+
             botaoDesafios.classList.add('ativo');
             botaoUsuarios.classList.remove('ativo');
+
+            graficoResolucoesPeriodo();
         }
     }
 
-    graficoResolucoesPeriodo();
-
     async function graficoResolucoesPeriodo() {
-        let respostaResolucoes = await fetch("/estatisticas/resolucoesPeriodo", {
+        let periodo = await slctPeriodoResolucoes.value;
+
+        let respostaResolucoes = await fetch(`/estatisticas/resolucoesPeriodo/${periodo}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -89,7 +124,11 @@
 
         const graficoResolucoes = document.getElementById('canvasResolucoesPeriodo')
 
-        new Chart(graficoResolucoes, {
+        if(chartResolucoesPeriodo) {
+            chartResolucoesPeriodo.destroy();
+        }
+
+        chartResolucoesPeriodo = new Chart(graficoResolucoes, {
             type: 'line',
             data: {
                 labels,
@@ -108,4 +147,61 @@
             }
         });
     }
+
+    async function graficoUsuariosAtivosPeriodo() {
+        let periodo = await slctPeriodoUsuariosAtivos.value;
+
+        let respostaUsuariosAtivos = await fetch(`/estatisticas/usuariosAtivosPeriodo/${periodo}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!respostaUsuariosAtivos.ok) {
+            respostaUsuariosAtivos.text().then(texto => {
+                    console.error(texto);
+                });
+            return;
+        }
+
+        let jsonUsuariosAtivos = await respostaUsuariosAtivos.json();
+
+        let data = [];
+        let labels = [];
+
+        for (let i = 0; i < jsonUsuariosAtivos.length; i++) {
+            let diaAtual = jsonUsuariosAtivos[i];
+
+            labels.push(diaAtual.dataAtivo);
+            data.push(diaAtual.usuariosAtivos);
+        }
+
+        const graficoUsuariosAtivosPeriodo = document.getElementById('canvasUsuariosAtivosPeriodo')
+
+        if(chartUsuariosAtivosPeriodo) {
+            chartUsuariosAtivosPeriodo.destroy();
+        }
+
+        chartUsuariosAtivosPeriodo = new Chart(graficoUsuariosAtivosPeriodo, {
+            type: 'line',
+            data: {
+                labels,
+                datasets: [{
+                    label: 'Quantidade de Úsuarios Ativos',
+                    data,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
+    
 </script>

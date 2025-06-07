@@ -145,5 +145,61 @@ INSERT INTO Opcao(fkDesafio, idOpcao, descricao, correta) VALUES
     (20, 3, 'Tac8', 0),
     (20, 4, 'Bg5', 0);
     
-SELECT * FROM Desafio;
+/* DESAFIO 21 */
+INSERT INTO Desafio(data, jogador, imagem, explicacao) VALUES
+	('2025-06-05', 1, 'https://iili.io/FdyvNBj.png', 'Xeque-mate inevitável: Pretas jogam Dg5, única opção das pretas para defender o ponto de g2
+	é Df3, porém facilmente resolvido com Txf3, e não há mais como as brancas defenderem este ponto fraco');
     
+INSERT INTO Opcao(fkDesafio, idOpcao, descricao, correta) VALUES
+	(21, 1, 'Dg5', 1),
+    (21, 2, 'Txf2', 0),
+    (21, 3, 'Bxg2', 0),
+    (21, 4, 'Cb4', 0);
+    
+SELECT * FROM DesafioResolvido;
+	
+SELECT DATE_FORMAT(DesafioResolvido.data, '%d/%m/%y') AS dataResolucao,
+	COUNT(*) AS totalRespostas
+FROM DesafioResolvido
+GROUP BY dataResolucao
+ORDER BY dataResolucao DESC;
+	
+WITH RECURSIVE datas AS (
+  SELECT CURDATE() AS data
+  UNION ALL
+  SELECT DATE_SUB(data, INTERVAL 1 DAY)
+  FROM datas
+  WHERE DATE_SUB(data, INTERVAL 1 DAY) >= CURDATE() - INTERVAL 6 DAY
+)
+SELECT 
+    DATE_FORMAT(datas.data, '%d/%m') AS dataResolucao,
+    COUNT(DR.data) AS totalRespostas
+FROM datas
+LEFT JOIN DesafioResolvido DR
+    ON DATE(DR.data) = datas.data
+GROUP BY datas.data
+ORDER BY datas.data DESC;
+
+SELECT * FROM Desafio;
+
+/* DESAFIO 22 */
+INSERT INTO Desafio (data, jogador, imagem, explicacao) VALUES
+	('2025-06-06', 1, 'https://iili.io/F31rbqJ.png', 'Com Dxa4, as pretas capturam o cavalo sem nenhuma complicação, além de 
+    também defenderem o cavalo de a3');
+    
+INSERT INTO Opcao(fkDesafio, idOpcao, descricao, correta) VALUES
+	(22, 1, 'Dxa4', 1),
+    (22, 2, 'Tb2', 0),
+    (22, 3, 'Cxc2', 0),
+    (22, 4, 'Bxg3', 0);
+    
+/* DESAFIO 23 */
+INSERT INTO Desafio(data, jogador, imagem, explicacao) VALUES
+	('2025-06-07', 0, 'https://iili.io/F3Exyej.png', 'Brancas dão xeque-mate em um único lance: Dd6#, não há para onde as
+    pretas fugirem');
+    
+INSERT INTO Opcao(fkDesafio, idOpcao, descricao, correta) VALUES
+	(23, 1, 'Dc3+', 0),
+    (23, 2, 'g4', 0),
+    (23, 3, 'Dd6+', 1),
+    (23, 4, 'Dxa7', 0);

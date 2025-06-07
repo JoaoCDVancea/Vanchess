@@ -7,6 +7,12 @@
     gap: 40px;
 }
 
+.hide {
+    display: none;
+}
+
+/* BOTOES */
+
 #conteudo #botoes {
     display: flex;
 }
@@ -21,11 +27,39 @@
     border-right: 1px #000000 solid;
 }
 
-.tituloGrafico {
-    font-size: 30px;
-}
-
 .ativo {
     border-bottom: 6px #4179b2 solid;
     color: #6696c6;
+}
+
+/* GRÁFICOS */
+
+.tituloGrafico {
+    font-size: 55px;
+    font-weight: 450;
+}
+
+
+.grafico {
+    display: flex;
+    flex-direction: column;
+}
+
+#divOpcoes {
+    display: flex;
+    gap: 20px;
+}
+
+#divOpcoes p {
+    color: #8F8F8F;
+    font-size: 30px;
+    font-style: italic;
+}
+
+#divOpcoes select {
+    border: none;
+    background: none;
+    font-size: 30px;
+    font-weight: bold;
+    color: #235b93
 }

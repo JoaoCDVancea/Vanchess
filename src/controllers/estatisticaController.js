@@ -10,12 +10,23 @@ function estatisticasDesafio(req, res) {
 }
 
 function resolucoesPeriodo(req, res) {
-    estatisticaModel.resolucoesPeriodo().then((resultado) => {
+    let periodo = req.params.periodo;
+
+    estatisticaModel.resolucoesPeriodo(periodo).then((resultado) => {
+        res.status(200).json(resultado);
+    });
+}
+
+function usuariosAtivosPeriodo(req, res) {
+    let periodo = req.params.periodo;
+
+    estatisticaModel.usuariosAtivosPeriodo(periodo).then((resultado) => {
         res.status(200).json(resultado);
     });
 }
 
 module.exports = {
     estatisticasDesafio,
-    resolucoesPeriodo
+    resolucoesPeriodo,
+    usuariosAtivosPeriodo
 }
