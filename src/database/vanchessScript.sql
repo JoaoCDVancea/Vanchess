@@ -203,3 +203,44 @@ INSERT INTO Opcao(fkDesafio, idOpcao, descricao, correta) VALUES
     (23, 2, 'g4', 0),
     (23, 3, 'Dd6+', 1),
     (23, 4, 'Dxa7', 0);
+
+WITH RECURSIVE Horas AS (
+	SELECT NOW() - INTERVAL 23 HOUR AS hora
+	UNION ALL
+	SELECT hora + INTERVAL 1 HOUR
+	FROM Horas
+	WHERE hora + INTERVAL 1 HOUR <= NOW()
+)
+SELECT 
+	DATE_FORMAT(Horas.hora, '%H:00') AS dataResolucao,
+	COUNT(DISTINCT fkUsuario) AS usuariosAtivos
+FROM Horas
+LEFT JOIN DesafioResolvido
+	ON DATE_FORMAT(DesafioResolvido.data, '%Y-%m-%d %H') = DATE_FORMAT(Horas.hora, '%Y-%m-%d %H')
+GROUP BY Horas.hora
+ORDER BY Horas.hora;
+
+SELECT COUNT(*) AS totalUsuariosCadastrados
+FROM Usuario;
+
+SELECT 
+  FLOOR(tempoConclusao / 10) * 10 AS faixa_inicio,
+  FLOOR(tempoConclusao / 10) * 10 + 9 AS faixa_fim,
+  COUNT(*) AS quantidade
+FROM DesafioResolvido
+GROUP BY faixa_inicio, faixa_fim
+ORDER BY faixa_inicio;
+
+/* DESAFIO 24 */
+INSERT INTO Desafio(data, jogador, imagem, explicacao) VALUES
+	('2025-06-08', 0, 'https://iili.io/F3O0G9t.png', 'Xeque-mate em três lances: Brancas jogam Td7+, o rei preto tem apenas duas casas
+    de escape: f8 e g8, porém, ambas culminam em xeque-mate com De7+ e Df7#');
+    
+INSERT INTO Opcao(fkDesafio, idOpcao, descricao, correta) VALUES
+	(24, 1, 'Dc4+', 0),
+    (24, 2, 'Td7+', 1),
+    (24, 3, 'Dxh1', 0),
+    (24, 4, 'Dd5+', 0);
+    
+SELECT * FROM Desafio;
+

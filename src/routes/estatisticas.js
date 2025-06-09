@@ -15,4 +15,12 @@ router.get("/usuariosAtivosPeriodo/:periodo", function(req, res) {
     estatisticaController.usuariosAtivosPeriodo(req, res);
 });
 
+router.get("/estatisticasUsuarios", function(req, res) {
+    estatisticaController.estatisticasUsuarios(req, res);
+})
+
+router.get("/respostasFaixaTempo", function(req, res) {
+    estatisticaController.respostasFaixaTempo(req, res);
+});
+
 module.exports = router;

@@ -25,8 +25,22 @@ function usuariosAtivosPeriodo(req, res) {
     });
 }
 
+function estatisticasUsuarios(req, res) {
+    estatisticaModel.estatisticasUsuarios().then((resultado) => {
+        res.status(200).json(resultado);
+    })
+}
+
+function respostasFaixaTempo(req, res) {
+    estatisticaModel.respostasFaixaTempo().then((resultado) => {
+        res.status(200).json(resultado);
+    })
+}
+
 module.exports = {
     estatisticasDesafio,
     resolucoesPeriodo,
-    usuariosAtivosPeriodo
+    usuariosAtivosPeriodo,
+    estatisticasUsuarios,
+    respostasFaixaTempo
 }

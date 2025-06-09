@@ -32,6 +32,32 @@
     color: #6696c6;
 }
 
+/* KPIS */
+
+.kpis {
+    display: flex;justify-content: space-between;
+    gap: 200px;
+}
+
+.box-kpi {
+    width: fit-content;
+}
+
+.box-kpi .titulo {
+    background-color: #4179b2;
+    color: #FFFFFF;
+    font-size: 25px;
+    padding: 10px;
+}
+
+.box-kpi .dado {
+    border: solid #8F8F8F;
+    border-width: 0px 0.5px 0.5px 0.5px;
+    font-size: 60px;
+    display: flex;
+    justify-content: center;
+}
+
 /* GRÁFICOS */
 
 .tituloGrafico {
@@ -39,6 +65,10 @@
     font-weight: 450;
 }
 
+.graficos {
+    display: flex;
+    gap: 30px;
+}
 
 .grafico {
     display: flex;

@@ -28,31 +28,47 @@
             </div>
         </div>
         <div id="telaUsuarios">
-            <div id="graficoUsuariosPeriodo" class="grafico">
-                <h1 class="tituloGrafico">Usuários Ativos Por Período</h1> 
-                <div id="divOpcoes">
-                    <p>Selecione um período: </p>
-                    <select name="" id="slctPeriodoUsuariosAtivos" onchange="graficoUsuariosAtivosPeriodo()">
-                        <option value="semana">Última semana</option>
-                        <option value="mes">Último mês</option>
-                        <option value="dia">Último dia</option>
-                    </select>
+            <div class="kpis">
+                <div class="box-kpi">
+                    <div class="titulo">
+                        <h3>Usuários Cadastrados</h3>
+                    </div>
+                    <div id="totalUsuariosCadastrados" class="dado"></div>
                 </div>
-                <canvas id="canvasUsuariosAtivosPeriodo"></canvas>
+            </div>
+            <div class="graficos">
+                <div id="graficoUsuariosPeriodo" class="grafico">
+                    <h1 class="tituloGrafico">Usuários Ativos Por Período</h1>
+                    <div id="divOpcoes">
+                        <p>Selecione um período: </p>
+                        <select name="" id="slctPeriodoUsuariosAtivos" onchange="graficoUsuariosAtivosPeriodo()">
+                            <option value="semana">Última semana</option>
+                            <option value="mes">Último mês</option>
+                            <option value="dia">Último dia</option>
+                        </select>
+                    </div>
+                    <canvas id="canvasUsuariosAtivosPeriodo"></canvas>
+                </div>
             </div>
         </div>
         <div id="telaDesafios" class="hide">
-            <div id="graficoResolucoesPeriodo" class="grafico">
-                <h1 class="tituloGrafico">Resoluções Por Período</h1> 
-                <div id="divOpcoes">
-                    <p>Selecione um período: </p>
-                    <select name="" id="slctPeriodoResolucoes" onchange="graficoResolucoesPeriodo()">
-                        <option value="semana">Última semana</option>
-                        <option value="mes">Último mês</option>
-                        <option value="dia">Último dia</option>
-                    </select>
+            <div class="graficos">
+                <div id="graficoRespostasFaixaTempo" class="grafico">
+                    <h1 class="tituloGrafico">Resoluções por Faixa de Tempo</h1>
+                    <canvas id="canvasRespostasFaixaTempo"></canvas>
                 </div>
-                <canvas id="canvasResolucoesPeriodo"></canvas>
+                <div id="graficoResolucoesPeriodo" class="grafico">
+                    <h1 class="tituloGrafico">Resoluções Por Período</h1>
+                    <div id="divOpcoes">
+                        <p>Selecione um período: </p>
+                        <select name="" id="slctPeriodoResolucoes" onchange="graficoResolucoesPeriodo()">
+                            <option value="semana">Última semana</option>
+                            <option value="mes">Último mês</option>
+                            <option value="dia">Último dia</option>
+                        </select>
+                    </div>
+                    <canvas id="canvasResolucoesPeriodo"></canvas>
+                </div>
             </div>
         </div>
     </div>
@@ -64,6 +80,7 @@
 <script>
     let chartResolucoesPeriodo = null;
     let chartUsuariosAtivosPeriodo = null;
+    let chartRespostasFaixaTempo = null;
 
     alterarDash('usuarios');
 
@@ -81,6 +98,7 @@
             botaoUsuarios.classList.add('ativo');
             botaoDesafios.classList.remove('ativo');
 
+            estatisticasUsuarios();
             graficoUsuariosAtivosPeriodo();
         } else if (dashboard == 'desafios') {
             telaDesafios.classList.remove('hide');
@@ -90,6 +108,7 @@
             botaoUsuarios.classList.remove('ativo');
 
             graficoResolucoesPeriodo();
+            respostasFaixaTempo();
         }
     }
 
@@ -105,8 +124,8 @@
 
         if (!respostaResolucoes.ok) {
             respostaResolucoes.text().then(texto => {
-                    console.error(texto);
-                });
+                console.error(texto);
+            });
             return;
         }
 
@@ -124,7 +143,7 @@
 
         const graficoResolucoes = document.getElementById('canvasResolucoesPeriodo')
 
-        if(chartResolucoesPeriodo) {
+        if (chartResolucoesPeriodo) {
             chartResolucoesPeriodo.destroy();
         }
 
@@ -160,8 +179,8 @@
 
         if (!respostaUsuariosAtivos.ok) {
             respostaUsuariosAtivos.text().then(texto => {
-                    console.error(texto);
-                });
+                console.error(texto);
+            });
             return;
         }
 
@@ -179,7 +198,7 @@
 
         const graficoUsuariosAtivosPeriodo = document.getElementById('canvasUsuariosAtivosPeriodo')
 
-        if(chartUsuariosAtivosPeriodo) {
+        if (chartUsuariosAtivosPeriodo) {
             chartUsuariosAtivosPeriodo.destroy();
         }
 
@@ -203,5 +222,102 @@
         });
     }
 
-    
+    async function estatisticasUsuarios() {
+        let respostaEstatisticasUsuarios = await fetch("/estatisticas/estatisticasUsuarios", {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!respostaEstatisticasUsuarios.ok) {
+            respostaEstatisticasUsuarios.text().then((texto) => {
+                console.error(texto);
+            });
+        }
+
+        let jsonEstatisticasUsuarios = await respostaEstatisticasUsuarios.json();
+
+        totalUsuariosCadastrados.innerHTML = `<p>${jsonEstatisticasUsuarios[0].totalUsuariosCadastrados}</p>`;
+    }
+
+    async function respostasFaixaTempo() {
+        let respostaRespostasFaixaTempo = await fetch("/estatisticas/respostasFaixaTempo", {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!respostaRespostasFaixaTempo.ok) {
+            respostaRespostasFaixaTempo.text().then((erro) => {
+                console.error(erro);
+            });
+            return;
+        }
+
+        let jsonRespostasFaixaTempo = await respostaRespostasFaixaTempo.json();
+
+        let data = [];
+
+        for(let i = 0; i < jsonRespostasFaixaTempo.length; i++) {
+            let faixaAtual = jsonRespostasFaixaTempo[i];
+
+            data.push({x: faixaAtual.faixaInicio, y: faixaAtual.quantidade});
+        }
+
+        console.log(data);
+
+        const graficoRespostasFaixaTempo = document.getElementById('canvasRespostasFaixaTempo');
+
+        if(chartRespostasFaixaTempo) {
+            chartRespostasFaixaTempo.destroy();
+        }
+
+        chartRespostasFaixaTempo = new Chart(graficoRespostasFaixaTempo, {
+            type: 'bar',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    label: 'Quantidade de Respostas',
+                    data,
+                    borderWidth: 1,
+                    barPercentage: 1,
+                    categoryPercentage: 1
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        type: 'linear',
+                        offset: false,
+                        grid: {
+                            offset: true
+                        },
+                        title: {
+                            display: true,
+                            text: 'Segundos'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Respostas'
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            title: (items) => {
+                                if(!items.length) {
+                                    return '';
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
 </script>

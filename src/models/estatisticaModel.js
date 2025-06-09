@@ -129,8 +129,33 @@ function usuariosAtivosPeriodo(periodo) {
     return database.executar(instrucaoSql);
 }
 
+function estatisticasUsuarios() {
+    let instrucaoSql = `
+        SELECT COUNT(*) AS totalUsuariosCadastrados
+        FROM Usuario;
+    `;
+
+    return database.executar(instrucaoSql);
+}
+
+function respostasFaixaTempo() {
+    let instrucaoSql = `
+        SELECT 
+            FLOOR(tempoConclusao / 10) * 10 AS faixaInicio,
+            FLOOR(tempoConclusao / 10) * 10 + 9 AS faixa_fim,
+            COUNT(*) AS quantidade
+        FROM DesafioResolvido
+        GROUP BY faixaInicio, faixa_fim
+        ORDER BY faixainicio;
+    `;
+
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     estatisticasDesafio,
     resolucoesPeriodo,
-    usuariosAtivosPeriodo
+    usuariosAtivosPeriodo,
+    estatisticasUsuarios,
+    respostasFaixaTempo
 }
