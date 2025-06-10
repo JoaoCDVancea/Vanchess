@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artigos - Vanchess</title>
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/artigos.css">
+</head>
+
+<body>
+    <div id="navbar">
+        <a href="../dashboard/desafios.html" class="link">
+            <div class="navbar-link">
+                <p>Desafios</p>
+                <img src="../assets/icon/botaoDesafios.svg" alt="">
+            </div>
+        </a>
+        <a href="../dashboard/artigos.html" class="link">
+            <div class="navbar-link">
+                <p>Artigos</p>
+                <img src="../assets/icon/botaoArtigos.svg" alt="">
+            </div>
+        </a>
+    </div>
+    <div id="conteudo">
+        <h1>Artigos</h1>
+        <div id="novoArtigo" onclick="popUpEscreverArtigo()">
+            <p>Escrever um artigo +</p>
+        </div>
+        <div id="popupEscreverArtigo" class="popup-container hide">
+            <div class="escreverArtigo">
+                <h2>Novo Artigo</h2>
+                <input type="text" placeholder="Título do artigo" id="iptTituloArtigo">
+                <input type="text" placeholder="Link da Imagem de Capa" id="iptImagemArtigo">
+                <textarea placeholder="Escreva aqui..." id="iptTextoArtigo"></textarea>
+                <button onclick="popUpEscreverArtigo()">Cancelar</button>
+                <button onclick="publicarArtigo()">Publicar</button>
+            </div>
+        </div>
+        <div id="artigos">
+            <div class="artigo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Checkmate2.jpg/330px-Checkmate2.jpg"
+                    alt="">
+                <div class="artigo-conteudo">
+                    <h1>Notação do Xadrez</h1>
+                    <div class="subtitulo">
+                        <h2>Escrito por João </h2>
+                        <h2>09/06/2025 20:02</h2>
+                    </div>
+                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Exercitationem saepe, tenetur excepturi
+                        iste impedit quae sunt ab est voluptas magni aliquid, voluptatibus quo in dolores tempora
+                        expedita?
+                        Accusamus, doloribus assumenda?
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script src="../js/navbar.js"></script>
+<script>
+    exibirArtigos();
+
+    function popUpEscreverArtigo() {
+        let popUp = document.getElementById('popupEscreverArtigo');
+
+        if (popUp.classList.contains('hide')) {
+            popUp.classList.remove('hide');
+            popUp.style.display = 'flex';
+        } else {
+            popUp.classList.add('hide');
+            popUp.style.display = 'none';
+        }
+    }
+
+    async function publicarArtigo() {
+        let titulo = iptTituloArtigo.value;
+        let img = iptImagemArtigo.value;
+        let texto = iptTextoArtigo.value;
+
+        let respostaAdicionarArtigo = await fetch("/artigos/publicarArtigo", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                tituloServer: titulo,
+                imgServer: img,
+                textoServer: texto,
+                idUsuarioServer: sessionStorage.ID_USUARIO
+            })
+        });
+
+        if (!respostaAdicionarArtigo.ok) {
+            respostaAdicionarArtigo.text((erro) => {
+                console.error(erro);
+            })
+        }
+
+        let popUpEscreverArtigo = document.getElementById('popupEscreverArtigo');
+
+        popUpEscreverArtigo.classList.add('hide');
+        popUpEscreverArtigo.style.display = 'none';
+    }
+
+    async function exibirArtigos() {
+        let respostaArtigos = await fetch('/artigos/exibirArtigos', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!respostaArtigos.ok) {
+            return;
+            respostaArtigos.text().then((erro) => {
+                console.error(erro);
+            })
+        };
+
+        let jsonArtigos = await respostaArtigos.json();
+
+        jsonArtigos.forEach((artigo) => {
+            let artigos = document.getElementById('artigos');
+
+            let artigoConteudo = document.createElement('div')
+            artigoConteudo.innerHTML = `
+                <div class="artigo">
+                    <img src="${artigo.imagem}" alt="">
+                    <div class="artigo-conteudo">
+                        <h1>${artigo.titulo}</h1>
+                        <div class="subtitulo">
+                            <h2>Escrito por ${artigo.nomeUsuario} </h2>
+                            <h2>${artigo.data}</h2>
+                        </div>
+                        <p>${artigo.texto.substring(0, 300)}...
+                        </p>
+                    </div>
+                </div>
+            `;
+
+            artigos.appendChild(artigoConteudo);
+        });
+    }
+</script>

@@ -17,6 +17,12 @@
                 <img src="../assets/icon/botaoDesafios.svg" alt="">
             </div>
         </a>
+        <a href="../dashboard/artigos.html" class="link">
+            <div class="navbar-link">
+                <p>Artigos</p>
+                <img src="../assets/icon/botaoArtigos.svg" alt="">
+            </div>
+        </a>
     </div>
     <div id="conteudo">
         <div id="botoes">
@@ -260,30 +266,29 @@
 
         let data = [];
 
-        for(let i = 0; i < jsonRespostasFaixaTempo.length; i++) {
+        for (let i = 0; i < jsonRespostasFaixaTempo.length; i++) {
             let faixaAtual = jsonRespostasFaixaTempo[i];
 
-            data.push({x: faixaAtual.faixaInicio, y: faixaAtual.quantidade});
+            data.push({ x: faixaAtual.faixaInicio, y: faixaAtual.quantidade });
         }
 
         console.log(data);
 
         const graficoRespostasFaixaTempo = document.getElementById('canvasRespostasFaixaTempo');
 
-        if(chartRespostasFaixaTempo) {
+        if (chartRespostasFaixaTempo) {
             chartRespostasFaixaTempo.destroy();
         }
 
         chartRespostasFaixaTempo = new Chart(graficoRespostasFaixaTempo, {
             type: 'bar',
             data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
                 datasets: [{
                     label: 'Quantidade de Respostas',
                     data,
                     borderWidth: 1,
                     barPercentage: 1,
-                    categoryPercentage: 1
+                    categoryPercentage: 1,
                 }]
             },
             options: {
@@ -297,6 +302,9 @@
                         title: {
                             display: true,
                             text: 'Segundos'
+                        },
+                        ticks: {
+                            stepSize: 10
                         }
                     },
                     y: {
@@ -310,9 +318,10 @@
                     tooltip: {
                         callbacks: {
                             title: (items) => {
-                                if(!items.length) {
-                                    return '';
-                                }
+
+                                if (!items.length) return '';
+                                const x = items[0].parsed.x;
+                                return `Entre ${x} e ${x + 10} segundos`;
                             }
                         }
                     }

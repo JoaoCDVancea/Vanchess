@@ -142,10 +142,10 @@ function respostasFaixaTempo() {
     let instrucaoSql = `
         SELECT 
             FLOOR(tempoConclusao / 10) * 10 AS faixaInicio,
-            FLOOR(tempoConclusao / 10) * 10 + 9 AS faixa_fim,
+            FLOOR(tempoConclusao / 10) * 10 + 9 AS faixaFim,
             COUNT(*) AS quantidade
         FROM DesafioResolvido
-        GROUP BY faixaInicio, faixa_fim
+        GROUP BY faixaInicio, faixaFim
         ORDER BY faixainicio;
     `;
 

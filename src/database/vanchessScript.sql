@@ -244,3 +244,23 @@ INSERT INTO Opcao(fkDesafio, idOpcao, descricao, correta) VALUES
     
 SELECT * FROM Desafio;
 
+CREATE TABLE Artigo(
+	idArtigo INT PRIMARY KEY AUTO_INCREMENT,
+    fkUsuario INT NOT NULL,
+    titulo VARCHAR(50) NOT NULL,
+    imagem VARCHAR(300) NOT NULL,
+    texto TEXT NOT NULL,
+    aprovado INT NOT NULL DEFAULT 0,
+    data DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+CONSTRAINT fkArtigoUsuario
+	FOREIGN KEY(fkUsuario) REFERENCES Usuario(idUsuario)
+);
+
+SELECT titulo,
+	imagem,
+	texto,
+    aprovado,
+    DATE_FORMAT(data, "%d/%m/%y %k:%i"),
+	Usuario.nome AS nomeUsuario
+FROM Artigo
+INNER JOIN Usuario ON Artigo.fkUsuario = Usuario.idUsuario;
