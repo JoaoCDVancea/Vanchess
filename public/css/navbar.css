@@ -13,20 +13,49 @@ a {
 /* NAVBAR */
 
 #navbar {
-    width: 15vw;
+    width: 16vw;
     height: 100vh;
     background-color: #4179b2;
     position: fixed;
+    display: flex;
+    flex-direction: column;
+    padding-left: 10px;
+    justify-content: space-between;
 }
 
-#navbar .navbar-link{
+#logo {
+    width: 70%;
+    align-self: center;
+    margin-top: 20px;
+}
+
+#paginas {
+    margin-bottom: 200px;
+}
+
+#navbar .navbar-link {
     display: flex;
     gap: 10px;
     cursor: pointer;
+    width: 90%;
+    margin-bottom: 10px;
 }
 
 #navbar .navbar-link p {
-    font-size: 40px;
+    font-size: 34px;
     color: #FFFFFF;
-    font-weight: 500;
+    font-weight: 600;
+}
+
+#navbar .selecionado {
+    background-color: #5f9bd8;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#desconectar {
+    align-self: center;
 }

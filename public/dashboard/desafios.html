@@ -10,20 +10,7 @@
 </head>
 
 <body>
-    <div id="navbar">
-        <a href="../dashboard/desafios.html" class="link">
-            <div class="navbar-link">
-                <p>Desafios</p>
-                <img src="../assets/icon/botaoDesafios.svg" alt="">
-            </div>
-        </a>
-        <a href="../dashboard/artigos.html" class="link">
-            <div class="navbar-link">
-                <p>Artigos</p>
-                <img src="../assets/icon/botaoArtigos.svg" alt="">
-            </div>
-        </a>
-    </div>
+    <div id="navbar"></div>
     <div class="conteudo">
         <div class="section">
             <div class="head">
@@ -77,7 +64,7 @@
             }
         });
 
-        if(!respostaDiaria.ok) {
+        if (!respostaDiaria.ok) {
             return;
         }
 
@@ -177,7 +164,7 @@
                     console.log(json)
                     json.forEach((desafio) => {
                         let idDesafioLista = desafio.idDesafio;
-                     
+
                         if (idDesafioLista != idDesafioDiario) {
                             listaDesafios.innerHTML += `
                                 <div class="desafioListado" id="desafioListado${idDesafioLista}" onclick="exibirDesafio(${idDesafioLista})">
@@ -438,9 +425,9 @@
 
             estatisticas.classList.remove("hide");
 
-            } catch (erro) {
-                console.log(`Erro: ${erro}`);
-            }
+        } catch (erro) {
+            console.log(`Erro: ${erro}`);
         }
+    }
 
 </script>

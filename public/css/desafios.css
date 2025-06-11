@@ -124,6 +124,7 @@ body {
     justify-content: center;
     align-items: center;
     border-radius: 4px;
+    cursor: pointer;
 }
 
 #desafio .desafio-conteudo #botoes .correto {
@@ -182,6 +183,7 @@ body {
     align-items: center;
     font-size: 60px;
     font-weight: 600;
+    cursor: pointer;
 }
 
 #listaDesafios .selecionado {

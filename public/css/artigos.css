@@ -1,5 +1,5 @@
 #conteudo {
-    margin-left: 15vw;
+    margin-left: 16vw;
     padding: 40px;
     display: flex;
     flex-direction: column;
@@ -10,17 +10,29 @@ h1 {
     font-size: 80px;
 }
 
+.topo {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+}
+
 /* NOVO ARTIGO */
 
 #novoArtigo {
-    background-color: #4179b2;
-    width: 360px;
-    height: 60px;
     display: flex;
+    background-color: #4179b2;
+    width: fit-content;
+    height: 60px;
     justify-content: center;
     align-items: center;
     border-radius: 9px;
     cursor: pointer;
+}
+
+#novoArtigo .botaoEscrever {
+    display: flex;
+    padding: 0px 10px 0px 10px;
+    gap: 5px;
 }
 
 #novoArtigo p{
