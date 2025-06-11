@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Artigos - Vanchess</title>
+    <title>Configurações - Vanchess</title>
     <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/configuracoes.css">
     <link rel="stylesheet" href="../css/artigos.css">
 </head>
-
 <body>
     <div id="navbar">
         <a href="../dashboard/desafios.html" class="link">
@@ -25,26 +24,7 @@
         </a>
     </div>
     <div id="conteudo">
-        <h1>Artigos</h1>
-        <div id="novoArtigo" onclick="popUpEscreverArtigo()">
-            <p>Escrever um artigo +</p>
-        </div>
-        <div id="popupEscreverArtigo" class="popup-container hide">
-            <div class="escreverArtigo">
-                <div class="titulo">
-                    <h2>Novo Artigo</h2>
-                    <h3>Dica: Utilize tags HTML para melhorar seu artigo!</h3>
-                </div>
-                <input type="text" placeholder="Título do artigo" id="iptTituloArtigo">
-                <input type="text" placeholder="Link da Imagem de Capa" id="iptImagemArtigo">
-                <textarea placeholder="Escreva aqui..." id="iptTextoArtigo"></textarea>
-                <p id="avisoEscreverArtigo"></p>
-                <div class="botoes">
-                    <div onclick="popUpEscreverArtigo()" class="cancelar">Cancelar</div>
-                    <div onclick="verPrevia()" class="proximo">Ver Prévia</div>
-                </div>
-            </div>
-        </div>
+        <h1 class="titulo">Artigos Aguardando Revisão</h1>
         <div id="artigos"></div>
         <div id="popupArtigo" class="popup-container hide" onclick="fecharArtigo()">
             <img src="" alt="">
@@ -53,10 +33,9 @@
         </div>
     </div>
 </body>
-
 </html>
 <script src="../js/navbar.js"></script>
 <script src="../js/artigos.js"></script>
 <script>
-    exibirArtigos('artigos');
+    exibirArtigos('configuracoes');
 </script>

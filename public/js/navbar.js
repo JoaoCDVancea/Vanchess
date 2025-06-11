@@ -1,15 +1,17 @@
 gerarNavbar();
 
 async function gerarNavbar() {
-
-
     const isAdmin = await verificarAdmin();
     
     if(isAdmin == 1) {
         navbar.innerHTML += `
-        <a href="../dashboard/dashboard.html"><div class="navbar-link">
-            <p>Dashboard</p>
-        </div></a> `;
+            <a href="../dashboard/dashboard.html"><div class="navbar-link">
+                <p>Dashboard</p>
+            </div></a>
+            <a href="../dashboard/configuracoes.html"><div class="navbar-link">
+                <p>Configurações</p>
+            </div></a> 
+        `;
     }
 }
 

@@ -17,7 +17,25 @@ function exibirArtigos(req, res) {
     });
 }
 
+function aprovarArtigo(req, res) {
+    let idArtigo = req.params.idArtigo;
+
+    artigoModel.aprovarArtigo(idArtigo).then((resultado) => {
+        res.status(200).json(resultado);
+    });
+}
+
+function reprovarArtigo(req, res) {
+    let idArtigo = req.params.idArtigo;
+
+    artigoModel.reprovarArtigo(idArtigo).then((resultado) => {
+        res.status(200).json(resultado);
+    });
+}
+
 module.exports = {
     publicarArtigo,
-    exibirArtigos
+    exibirArtigos,
+    aprovarArtigo,
+    reprovarArtigo
 }
