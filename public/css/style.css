@@ -23,7 +23,6 @@ a {
 /* BANNER */
 
 .banner {
-    background-image: url('../assets/imgs/Banner.png');
     background-repeat: no-repeat;
     background-size: 100vw auto;
     width: 100vw;
@@ -32,6 +31,25 @@ a {
     color: #FFFFFF;
     display: flex;
     flex-direction: column;
+}
+
+#bannerIndex {
+    background-image: url('../assets/imgs/Banner.png');
+}
+
+#bannerSaibaMais {
+    background-image: url('../assets/imgs/saibaMais.png');
+}
+
+.banner #topo {
+    display: flex;
+    justify-content: space-between;
+}
+
+.banner #topo img{
+    width: 200px;
+    margin-left: 5vw;
+    margin-top: 20px;
 }
 
 .banner #botaoEntrar {
@@ -59,6 +77,10 @@ a {
     font-size: 12vw;
 }
 
+#bannerSaibaMais h1 {
+    font-size: 11vw;
+}
+
 .banner .conteudo p {
     font-size: 2vw;
     font-weight: 300;
@@ -77,7 +99,8 @@ a {
 .banner .conteudo .conteudoBanner .botoes #botaoSaibaMais{
     width: 30%;
     gap: 10px;
-    padding: 10px 0px 10px 0px; 
+    padding: 10px 0px 10px 0px;
+    color: #FFFFFF;
 }
 
 .banner .conteudo .conteudoBanner .botoes #botaoCadastrar{
@@ -152,6 +175,10 @@ a {
 
 .body .section .conteudo .botaoAzul {
     color: #FFFFFF;
+}
+
+.botaoTransparente, .botaoAzul {
+    cursor: pointer;
 }
 
 .body #homeDesafios {

@@ -3,18 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vanchess - Home</title>
+    <title>Home - Vanchess</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="banner">
-        <div id="botaoEntrar" class="botaoTransparente"><a href="login.html">Entrar</a></div>
+    <div class="banner" id="bannerIndex">
+        <div id="topo">
+            <a href="index.html"><img src="./assets/imgs/vanchessLogo.png" alt=""></a>
+            <div id="botaoEntrar" class="botaoTransparente"><a href="login.html">Entrar</a></div>
+        </div>
         <div class="conteudo">
             <div class="conteudoBanner">
                 <h1>Xadrez</h1>
                 <p>Um espaço completo para aprender xadrez, resolver desafios e explorar artigos sobre o jogo. Tudo feito para quem quer evoluir e se divertir.</p>
                 <div class="botoes">
-                    <div class="botaoTransparente" id="botaoSaibaMais">
+                    <div class="botaoTransparente" id="botaoSaibaMais" onclick="paginaSaibaMais()">
                         <p>Saiba Mais</p>
                         <img src="./assets/icon/saibaMais.svg" alt="Saiba Mais Icon">
                     </div>
@@ -63,3 +66,8 @@
     </div>
 </body>
 </html>
+<script>
+    function paginaSaibaMais() {
+        window.location = 'saibaMais.html';
+    }
+</script>

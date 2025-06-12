@@ -70,5 +70,4 @@ async function verificarAdmin() {
 
 function desconectar() {
     window.location = '../index.html';
-    
 }

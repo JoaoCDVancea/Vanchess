@@ -265,10 +265,35 @@ SELECT titulo,
 FROM Artigo
 INNER JOIN Usuario ON Artigo.fkUsuario = Usuario.idUsuario;
 
-select * from Usuario;
+/* DESAFIO 25 */
+INSERT INTO Desafio(data, jogador, imagem, explicacao) VALUES
+	('2025-06-09', 1, 'https://iili.io/FKfeRzQ.png', 'Xeque-mate inevitável: Após as pretas jogarem T8c3+, a única opção das brancas é 
+    Re4, porém as pretas dão xeque-mate com Te2+');
 
-SELECT * FROM Artigo;
+INSERT INTO Opcao(fkDesafio, idOpcao, descricao, correta) VALUES
+	(25, 1, 'g5', 0),
+    (25, 2, 'T8c3+', 1),
+    (25, 3, 'T2c3+', 0),
+    (25, 4, 'h5', 0);
 
-UPDATE Artigo
-SET imagem = 'https://www.torneiosdexadrez.com.br/wp-content/uploads/2023/12/xadrez-estrategia.png'
-WHERE idArtigo = 3;
+/* DESAFIO 26 */
+INSERT INTO Desafio(data, jogador, imagem, explicacao) VALUES
+	('2025-06-10', 1, 'https://iili.io/FKqakhJ.png', 'Uma dama por um bispo: Caso as pretas joguem Bc5, as pretas não tem como salvar sua dama,
+	já que ela está na mesma linha do rei, então são obrigadas a capturar o bispo, e a dama é capturada com Cc5');
+
+INSERT INTO Opcao(fkDesafio, idOpcao, descricao, correta) VALUES
+	(26, 1, 'cxd5', 0),
+    (26, 2, 'Da5', 0),
+    (26, 3, 'Bc5', 1),
+    (26, 4, 'Bg6', 0);
+
+/* DESAFIO 27 */
+INSERT INTO Desafio(data, jogador, imagem, explicacao) VALUES
+	('2025-06-11', 1, 'https://iili.io/FfIVtC7.png', 'Xeque descoberto com Be4+, ambo bispo e dama dão xeque. Em qualquer xegue descoberto a única
+	opção possível é mover o rei. Neste caso, para a casa de g3, seguido de Dg2+ e Dh2# das pretas');
+    
+INSERT INTO Opcao(fkDesafio, idOpcao, descricao, correta) VALUES
+	(27, 1, 'Be4+', 1),
+    (27, 2, 'Bb3', 0),
+    (27, 3, 'Bf5', 0),
+    (27, 4, 'Da3', 0);
