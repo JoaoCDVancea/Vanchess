@@ -80,18 +80,18 @@ async function exibirArtigos(pagina) {
                 let artigoConteudo = document.createElement('div');
 
                 artigoConteudo.innerHTML = `
-                <div class="artigo" onclick="lerArtigo(${indice})">
-                <img src="${artigo.imagem}" alt="">
-                <div class="artigo-conteudo">
-                <h1>${artigo.titulo}</h1>
-                <div class="subtitulo">
-                <h2>Escrito por ${artigo.nomeUsuario} </h2>
-                <h2>${artigo.data}</h2>
-                </div>
-                <p>${artigo.texto.substring(0, 200)}...
-                </p>
-                </div>
-                </div>
+                        <div class="artigo" onclick="lerArtigo(${indice})">
+                            <img src="${artigo.imagem}" alt="">
+                            <div class="artigo-conteudo">
+                                <h1>${artigo.titulo}</h1>
+                                <div class="subtitulo">
+                                <h2>Escrito por ${artigo.nomeUsuario} </h2>
+                                <h2>${artigo.data}</h2>
+                            </div>
+                            <p>${artigo.texto.substring(0, 200)}...
+                            </p>
+                        </div>
+                    </div>
                 `;
                 
                 artigos.appendChild(artigoConteudo);

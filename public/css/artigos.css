@@ -21,6 +21,7 @@ h1 {
     width: 350px;
     border: 2px solid #000000;
     border-radius: 8px;
+    padding-left: 10px;
 }
 
 /* NOVO ARTIGO */
