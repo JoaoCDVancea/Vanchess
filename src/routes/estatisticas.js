@@ -23,4 +23,16 @@ router.get("/respostasFaixaTempo", function(req, res) {
     estatisticaController.respostasFaixaTempo(req, res);
 });
 
+router.get("/estatisticasArtigos", function(req, res) {
+    estatisticaController.estatisticasArtigos(req, res);
+});
+
+router.get("/estatisticasDesafiosGerais", function(req, res) {
+    estatisticaController.estatisticasDesafiosGerais(req, res);
+});
+
+router.get("/usuariosMelhorTempoMedio", function(req, res) {
+    estatisticaController.usuariosMelhorTempoMedio(req, res);
+});
+
 module.exports = router;

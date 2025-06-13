@@ -1,8 +1,6 @@
 let artigosData = [];
 let artigoEscrito;
 
-exibirArtigos();
-
 function popUpEscreverArtigo() {
     let popUp = document.getElementById('popupEscreverArtigo');
 
@@ -41,9 +39,11 @@ async function publicarArtigo() {
 
     popUpEscreverArtigo.classList.add('hide');
     popUpEscreverArtigo.style.display = 'none';
+    fecharArtigo();
 }
 
 async function exibirArtigos(pagina) {
+    let i = false;
     let respostaArtigos = await fetch('/artigos/exibirArtigos', {
         method: 'GET',
         headers: {
@@ -59,13 +59,13 @@ async function exibirArtigos(pagina) {
     };
 
     let jsonArtigos = await respostaArtigos.json();
-    console.log(jsonArtigos);
 
     let artigos = document.getElementById('artigos');
     artigos.innerHTML = ``;
     jsonArtigos.forEach((artigo, indice) => {
 
         if(pagina == 'artigos') {
+            i = true;
             if(artigo.aprovado == 1) {
                 
                 artigosData[indice] = ({
@@ -100,6 +100,8 @@ async function exibirArtigos(pagina) {
 
         if(pagina == 'configuracoes') {
             if(artigo.aprovado == 0) {
+                i = true;
+
                 artigosData[indice] = ({
                     'idArtigo': artigo.idArtigo,
                     'nomeUsuario': artigo.nomeUsuario,
@@ -130,7 +132,12 @@ async function exibirArtigos(pagina) {
                 artigos.appendChild(artigoConteudo);
             }
         }
+
     });
+
+    if(!i) {
+        artigos.innerHTML = `<p class="aguardandoRevisao" >Não há artigos aguardando revisão<p>`;
+    }
 }
 
 function exibirArtigo(artigo, metodo) {
@@ -148,21 +155,21 @@ function exibirArtigo(artigo, metodo) {
                     </div>
                     <div class="texto">
                         <p>${artigo.texto}</p>
-                    </div>                
+                    </div>
+                    <div class="botoes">
+                    <div class="cancelar" onclick="fecharArtigo()">Fechar</div>            
         `;
 
     if (metodo == 'previa') {
         texto += `
-                <div class="botoes">
-                    <div class="cancelar">Voltar</div>
-                    <div onclick="publicarArtigo(${artigoEscrito})" class="proximo">Publicar Artigo</div>
-                </div>
-            `;
+                <div onclick="publicarArtigo()" class="proximo">Publicar Artigo</div>
+            </div>
+        `;
     }
 
     if (metodo == 'aprovacao') {
         texto += `
-            <div class="botoes">
+            
                 <div class="cancelar" onclick="reprovarArtigo(${artigo.idArtigo})">Reprovar</div>
                 <div onclick="aprovarArtigo(${artigo.idArtigo})" class="proximo">Aprovar</div>
             </div>
@@ -214,12 +221,13 @@ function verPrevia() {
         'titulo': titulo,
         'texto': texto,
         'imagem': img,
-        'data': '13/06/2025'
+        'data': '11/05/1997'
     })
 
     exibirArtigo(artigo, 'previa');
 
     artigoEscrito = artigo;
+    console.log(artigoEscrito);
 }
 
 async function aprovarArtigo(idArtigo) {

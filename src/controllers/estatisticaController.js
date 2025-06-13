@@ -37,10 +37,31 @@ function respostasFaixaTempo(req, res) {
     })
 }
 
+function estatisticasArtigos(req, res) {
+    estatisticaModel.estatisticasArtigos().then((resultado) => {
+        res.status(200).json(resultado);
+    });
+}
+
+function estatisticasDesafiosGerais(req, res) {
+    estatisticaModel.estatisticasDesafiosGerais().then((resultado) => {
+        res.status(200).json(resultado);
+    });
+}
+
+function usuariosMelhorTempoMedio(req, res) {
+    estatisticaModel.usuariosMelhorTempoMedio().then((resultado) => {
+        res.status(200).json(resultado);
+    });
+}
+
 module.exports = {
     estatisticasDesafio,
     resolucoesPeriodo,
     usuariosAtivosPeriodo,
     estatisticasUsuarios,
-    respostasFaixaTempo
+    respostasFaixaTempo,
+    estatisticasArtigos,
+    estatisticasDesafiosGerais,
+    usuariosMelhorTempoMedio
 }

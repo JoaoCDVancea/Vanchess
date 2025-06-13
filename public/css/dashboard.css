@@ -35,8 +35,10 @@
 /* KPIS */
 
 .kpis {
-    display: flex;justify-content: space-between;
+    display: flex;
+    justify-content: space-around;
     gap: 200px;
+    margin-bottom: 40px;
 }
 
 .box-kpi {
@@ -67,7 +69,7 @@
 
 .graficos {
     display: flex;
-    gap: 30px;
+    gap: 50px;
 }
 
 .grafico {

@@ -297,3 +297,43 @@ INSERT INTO Opcao(fkDesafio, idOpcao, descricao, correta) VALUES
     (27, 2, 'Bb3', 0),
     (27, 3, 'Bf5', 0),
     (27, 4, 'Da3', 0);
+    
+/* DESAFIO 28 */
+INSERT INTO Desafio(data, jogador, imagem, explicacao) VALUES
+	('2025-06-12', 1, 'https://iili.io/FfyHxdx.png', 'Após Dh4+, as brancas defendem com g3, o que acaba abrindo uma grande oportunidade para
+    as pretas jogarem De4+ e logo em seguida capturarem a torre de h1');
+    
+INSERT INTO Opcao(fkDesafio, idOpcao, descricao, correta) VALUES
+	(28, 1, 'Df6', 0),
+    (28, 2, 'Cf6', 0),
+    (28, 3, 'Bf2+', 0),
+    (28, 4, 'Dh4+', 1);
+    
+/* DESAFIO 29 */
+INSERT INTO Desafio(data, jogador, imagem, explicacao) VALUES
+	('2025-06-13', 0, 'https://iili.io/FfyhS0Q.png', 'Mate forçado das brancas. Após jogarem Ba6+, as pretas tem duas opções: ou capturar o bispo
+    (mate imediato com Dc6#), ou fugir para a linha 8 (também mate imediato com Dc8#)');
+    
+INSERT INTO Opcao(fkDesafio, idOpcao, descricao, correta) VALUES
+	(29, 1, 'Bxc3', 0),
+    (29, 2, 'Bb3', 0),
+    (29, 3, 'Ba6+', 1),
+    (29, 4, 'De5', 0);
+    
+SELECT 
+	COUNT(*) AS DesafiosResolvidos,
+    (SELECT 
+		COUNT(*)
+	FROM DesafioResolvido
+    INNER JOIN Desafio ON Desafio.idDesafio = DesafioResolvido.fkDesafio
+    WHERE DATE_FORMAT(DesafioResolvido.data, '%Y-%m-%d') = CURRENT_DATE()
+    AND DATE_FORMAT(Desafio.data, '%Y-%m-%d') = CURRENT_DATE())  AS DesafiosDiariosResolvidos
+FROM DesafioResolvido;
+
+SELECT 
+	Usuario.nome,
+	AVG(tempoConclusao) AS tempo_medio
+FROM Usuario
+INNER JOIN DesafioResolvido ON Usuario.idUsuario = DesafioResolvido.fkUsuario
+GROUP BY Usuario.nome
+LIMIT 10;

@@ -6,3 +6,10 @@
 #conteudo .titulo {
     font-size: 60px;
 }
+
+.aguardandoRevisao {
+    font-size: 30px;
+    font-style: italic;
+    font-weight: 300;
+    margin-top: 30px;
+}

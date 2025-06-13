@@ -35,16 +35,34 @@ body {
     padding-bottom: 40px;
 }
 
+.conteudo .section .head p {
+    font-size: 28px;
+    text-align: center;
+    font-weight: 500;
+    margin-top: 30px;
+}
+
+.conteudo .section .head h2 {
+    font-size: 40px;
+}
+
+.conteudo .section .head span {
+    color: #4179b2;
+    font-size: 24px;
+    text-align: center;
+    cursor: pointer;
+}
+
 .conteudo .section .head .head-conteudo {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     height: 100%;
 }
 
-.conteudo .section .head .head-conteudo div {
+.conteudo .section .head .head-conteudo .content div {
     display: flex;
     border: 1px solid #000000;
     height: 60px;
@@ -61,6 +79,12 @@ body {
 .conteudo .section .head .head-conteudo h1 {
     font-size: 80px;
     justify-self: start;
+}
+
+.conteudo .section .head .head-conteudo .content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .conteudo .section .head .head-conteudo #botaoPrincipal {

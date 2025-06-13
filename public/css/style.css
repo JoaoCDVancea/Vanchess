@@ -189,3 +189,68 @@ a {
 .body #homeDesafios h1{
     color: #416992;
 }
+
+/* SAIBA MAIS */
+
+.sectionSaibaMais {
+    justify-content: space-between;
+    align-items: center ;
+}
+
+.imgSaibaMais {
+    width: 50%;
+    border-radius: 20px;
+}
+
+.body .sectionSaibaMais {
+    display: flex;
+    margin: 40px 0px 40px 0px;
+    width: 100%;
+    justify-content: space-between;
+    gap: 50px;
+}
+
+.body .sectionSaibaMais .conteudo {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 30px;
+}
+
+.body .sectionSaibaMais .conteudo h1 {
+    font-size: 5vw;
+}
+
+.body .sectionSaibaMais .conteudo p {
+    font-size: 1.8vw;
+    font-weight: 200;
+}
+
+.body .sectionSaibaMais .conteudo div {
+    width: 50%;
+    gap: 20px;
+}
+
+.body .sectionSaibaMais .conteudo div p {
+    font-size: 50px;
+    font-weight: 600;
+}
+
+.body .sectionSaibaMais .conteudo span {
+    font-weight: 600;
+    color: #4179B2;
+    font-size: 2vw;
+}
+
+.body .sectionSaibaMais .conteudo .botaoTransparente {
+    border: #000000 2px solid;
+}
+
+.body .sectionSaibaMais .conteudo .botaoAzul {
+    color: #FFFFFF;
+}
+
+.body .sectionInversa {
+    flex-direction: row-reverse;
+}

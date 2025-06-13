@@ -28,6 +28,12 @@
                     </div>
                     <div id="totalUsuariosCadastrados" class="dado"></div>
                 </div>
+                <div class="box-kpi">
+                    <div class="titulo">
+                        <h3>Artigos Publicados</h3>
+                    </div>
+                    <div id="totalArtigos" class="dado"></div>
+                </div>
             </div>
             <div class="graficos">
                 <div id="graficoUsuariosPeriodo" class="grafico">
@@ -42,9 +48,27 @@
                     </div>
                     <canvas id="canvasUsuariosAtivosPeriodo"></canvas>
                 </div>
+                <div id="graficoTempoMedioUsuarios" class="grafico">
+                    <h1 class="tituloGrafico">Usuários Melhor Tempo Médio</h1>
+                    <canvas id="canvasTempoMedioUsuarios"></canvas>
+                </div>
             </div>
         </div>
         <div id="telaDesafios" class="hide">
+            <div class="kpis">
+                <div class="box-kpi">
+                    <div class="titulo">
+                        <h3>Respostas Desafio De Hoje</h3>
+                    </div>
+                    <div id="totalRespostasDesafioDiario" class="dado"></div>
+                </div>
+                <div class="box-kpi">
+                    <div class="titulo">
+                        <h3>Total Respostas Desafios</h3>
+                    </div>
+                    <div id="totalDesafiosRespondidos" class="dado"></div>
+                </div>
+            </div>
             <div class="graficos">
                 <div id="graficoRespostasFaixaTempo" class="grafico">
                     <h1 class="tituloGrafico">Resoluções por Faixa de Tempo</h1>
@@ -74,6 +98,7 @@
     let chartResolucoesPeriodo = null;
     let chartUsuariosAtivosPeriodo = null;
     let chartRespostasFaixaTempo = null;
+    let chartUsuariosMelhorTempoMedio = null;
 
     alterarDash('usuarios');
 
@@ -92,7 +117,9 @@
             botaoDesafios.classList.remove('ativo');
 
             estatisticasUsuarios();
+            estatisticasArtigos();
             graficoUsuariosAtivosPeriodo();
+            usuariosMelhorTempoMedio();
         } else if (dashboard == 'desafios') {
             telaDesafios.classList.remove('hide');
             telaUsuarios.classList.add('hide');
@@ -102,6 +129,7 @@
 
             graficoResolucoesPeriodo();
             respostasFaixaTempo();
+            estatisticasDesafiosGerais();
         }
     }
 
@@ -234,8 +262,97 @@
         totalUsuariosCadastrados.innerHTML = `<p>${jsonEstatisticasUsuarios[0].totalUsuariosCadastrados}</p>`;
     }
 
+    async function estatisticasArtigos() {
+        let respostaArtigos = await fetch('/estatisticas/estatisticasArtigos', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application-json'
+            }
+        });
+
+        if(!respostaArtigos.ok) {
+            respostaArtigos.text().then((erro) => {
+                console.error(erro);
+            });
+        }
+
+        let jsonEstatisticasArtigos = await respostaArtigos.json();
+
+        totalArtigos.innerHTML = `<p>${jsonEstatisticasArtigos[0].totalArtigos}`;
+    }
+    
+    async function estatisticasDesafiosGerais() {
+        let respostasEstatisticasDesafiosGerais = await fetch('/estatisticas/estatisticasDesafiosGerais', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application-json'
+            }
+        });
+
+        if(!respostasEstatisticasDesafiosGerais.ok) {
+            respostasEstatisticasDesafiosGerais.text().then((erro) => {
+                console.error(erro);
+            });
+        }
+
+        let jsonEstatisticasDesafiosGerais = await respostasEstatisticasDesafiosGerais.json();
+
+        totalRespostasDesafioDiario.innerHTML = `${jsonEstatisticasDesafiosGerais[0].DesafiosDiariosResolvidos}`;
+        totalDesafiosRespondidos.innerHTML = `${jsonEstatisticasDesafiosGerais[0].DesafiosResolvidos}`;
+    }
+
+    async function usuariosMelhorTempoMedio() {
+        let respostaUsuariosMelhorTempoMedio = await fetch('/estatisticas/usuariosMelhorTempoMedio', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if(!respostaUsuariosMelhorTempoMedio.ok) {
+            respostaUsuariosMelhorTempoMedio.text().then((erro) => {
+                console.error(erro);
+            });
+        }
+
+        let jsonUsuariosMelhorTempoMedio = await respostaUsuariosMelhorTempoMedio.json();
+    
+        let data = [];
+        let labels = [];
+
+        jsonUsuariosMelhorTempoMedio.forEach((usuario) => {
+            labels.push(usuario.nome);
+            data.push(usuario.tempo_medio);
+        });
+
+        let graficoUsuariosMelhorTempoMedio = document.getElementById('canvasTempoMedioUsuarios');
+
+        if(chartUsuariosMelhorTempoMedio) {
+            chartUsuariosMelhorTempoMedio.destroy;
+        }
+
+        chartUsuariosMelhorTempoMedio = new Chart(graficoUsuariosMelhorTempoMedio, {
+            type: 'bar',
+            data: {
+                labels,
+                datasets: [{
+                    label: 'Tempo Médio',
+                    data,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    };
+
     async function respostasFaixaTempo() {
-        let respostaRespostasFaixaTempo = await fetch("/estatisticas/respostasFaixaTempo", {
+        let respostaRespostasFaixaTempo = await fetch('/estatisticas/respostasFaixaTempo', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

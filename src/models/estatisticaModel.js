@@ -152,10 +152,54 @@ function respostasFaixaTempo() {
     return database.executar(instrucaoSql);
 }
 
+function estatisticasArtigos() {
+    let instrucaoSql = `
+        SELECT COUNT(*) AS totalArtigos
+        FROM Artigo
+        WHERE aprovado = 1
+    `;
+
+    return database.executar(instrucaoSql);
+}
+
+function estatisticasDesafiosGerais() {
+    let instrucaoSql = `
+        SELECT 
+            COUNT(*) AS DesafiosResolvidos,
+            (SELECT 
+                COUNT(*)
+            FROM DesafioResolvido
+            INNER JOIN Desafio ON Desafio.idDesafio = DesafioResolvido.fkDesafio
+            WHERE DATE_FORMAT(DesafioResolvido.data, '%Y-%m-%d') = CURRENT_DATE()
+            AND DATE_FORMAT(Desafio.data, '%Y-%m-%d') = CURRENT_DATE())  AS DesafiosDiariosResolvidos
+        FROM DesafioResolvido;
+    `;
+
+    return database.executar(instrucaoSql);
+}
+
+function usuariosMelhorTempoMedio() {
+    let instrucaoSql = `
+        SELECT 
+            Usuario.nome,
+            AVG(tempoConclusao) AS tempo_medio
+        FROM Usuario
+        INNER JOIN DesafioResolvido ON Usuario.idUsuario = DesafioResolvido.fkUsuario
+        GROUP BY Usuario.nome
+        ORDER BY tempo_medio
+        LIMIT 10
+    `;
+
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     estatisticasDesafio,
     resolucoesPeriodo,
     usuariosAtivosPeriodo,
     estatisticasUsuarios,
-    respostasFaixaTempo
+    respostasFaixaTempo,
+    estatisticasArtigos,
+    estatisticasDesafiosGerais,
+    usuariosMelhorTempoMedio
 }
